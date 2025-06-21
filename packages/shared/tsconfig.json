@@ -1,0 +1,11 @@
+{
+    "include": ["."],
+    "exclude": ["node_modules"],
+    "compilerOptions": {
+      "baseUrl": ".",
+      "rootDir": ".",
+      "resolveJsonModule": true,
+      "erasableSyntaxOnly": false,
+      "composite": true,
+    }
+}

@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    ports:
+      - "3000:${PORT}"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - API_BASE_URL=${API_BASE_URL}
+      - PORT=${PORT}
+    volumes:
+      - .:/build_

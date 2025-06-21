@@ -1,0 +1,7 @@
+{
+  "name": "@test-connect/shared",
+  "version": "1.0.0",
+  "exports": {
+    "./enums/*": "./enums/*.ts"
+  }
+}

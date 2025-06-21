@@ -1,0 +1,17 @@
+{
+  "name": "test-connect",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "frontend:dev": "npm run dev --workspace=apps/frontend",
+    "frontend:build": "npm run build --workspace=apps/frontend",
+    "frontend:lint": "npm run lint --workspace=apps/frontend",
+    "frontend:preview": "npm run preview --workspace=apps/frontend",
+    "backend:build": "npm run build --workspace=apps/backend",
+    "backend:start": "npm run start --workspace=apps/backend",
+    "backend:dev": "npm run dev --workspace=apps/backend"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "@types/node": "^24.0.3"
+  }
+}
