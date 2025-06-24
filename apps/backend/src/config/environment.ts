@@ -7,15 +7,17 @@ dotenv.config();
  * @description This interface defines the structure of the environment variables used in the application.
  */
 export interface Environment {
-  NODE_ENV: string;
-  PORT: number;
-  API_BASE_URL: string;
+  PORT: number /*!< Port for the Express server */;
+  API_BASE_URL: string /*!< Base url of the API */;
+  MONGO_URI: string /*!< URL of the database */;
+  NODE_ENV: string /*!< Environment of the application */;
 }
 
 const variables: { [key: string]: string | undefined } = {
   PORT: process.env.PORT,
-  NODE_ENV: process.env.NODE_ENV,
   API_BASE_URL: process.env.API_BASE_URL,
+  MONGO_URI: process.env.MONGO_URI,
+  NODE_ENV: process.env.NODE_ENV,
 };
 
 for (const [key, value] of Object.entries(variables)) {
@@ -38,6 +40,7 @@ if (Number.isNaN(port)) {
 
 export const environment: Environment = {
   PORT: port,
-  NODE_ENV: process.env.NODE_ENV as string,
   API_BASE_URL: process.env.API_BASE_URL as string,
+  MONGO_URI: process.env.MONGO_URI as string,
+  NODE_ENV: process.env.NODE_ENV as string,
 };
