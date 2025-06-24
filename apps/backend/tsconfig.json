@@ -1,35 +1,34 @@
 {
-    "compilerOptions": {
-      /* Language and Environment */
-      "target": "es2016",
-  
-      /* Modules */
-      "module": "commonjs",
-  
-      /* Interop Constraints */
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "removeComments": true,
-  
-      /* Type Checking */
-      "strict": true,
-  
-      /* Completeness */
-      "skipLibCheck": true,
-  
-      /* Path */
-      "outDir": "build",
-      "typeRoots": ["./node_modules/@types", "./src/types"],
-      "rootDir": ".",
-      "baseUrl": ".",
-      "paths": {
-        "@config/*": ["src/config/*"],
-        "@core/*": ["src/core/*"],
-        "@enums/*": ["src/enums/*"],
-        "@routes/*": ["src/routes/*"],
-        "@routes": ["src/routes"],
-        "@utils/*": ["src/utils/*"]
-      }
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2016",
+
+    /* Modules */
+    "module": "commonjs",
+
+    /* Interop Constraints */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+
+    /* Type Checking */
+    "strict": true,
+
+    /* Completeness */
+    "skipLibCheck": true,
+
+    /* Path */
+    "outDir": "build",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@config/*": ["src/config/*"],
+      "@core/*": ["src/core/*"],
+      "@enums/*": ["src/enums/*"],
+      "@routes/*": ["src/routes/*"],
+      "@routes": ["src/routes"],
+      "@utils/*": ["src/utils/*"]
     }
   }
-  
+}
