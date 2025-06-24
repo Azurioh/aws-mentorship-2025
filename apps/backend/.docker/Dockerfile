@@ -1,13 +1,12 @@
 FROM node:lts-alpine
-
 WORKDIR /build_
 
-COPY package*.json ./
+COPY package*.json /build_
+COPY apps/backend /build_/apps/backend
+COPY packages /build_/packages
 
-RUN npm install
+RUN npm ci
 
-COPY . .
+WORKDIR /build_/apps/backend
 
-EXPOSE 3000
-
-CMD ["npm", "run", "dev"] 
+CMD ["npm", "run", "dev"]
