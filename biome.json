@@ -1,0 +1,76 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": ["node_modules", "dist", "build", ".serverless", ".vscode", "prisma", ".next"]
+  },
+  "formatter": {
+    "enabled": true,
+    "lineWidth": 120,
+    "indentWidth": 2,
+    "indentStyle": "space",
+    "formatWithErrors": true
+  },
+  "organizeImports": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": true,
+    "ignore": ["*.css"],
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "useSemanticElements": "info"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "info",
+        "noUnusedImports": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noImplicitAnyLet": "warn",
+        "noArrayIndexKey": "warn"
+      },
+      "performance": {
+        "noAccumulatingSpread": "info"
+      },
+      "complexity": {
+        "noForEach": "info"
+      },
+      "style": {
+        "noNonNullAssertion": "warn",
+        "useImportType": {
+          "level": "error",
+          "fix": "safe"
+        },
+        "noUselessElse": "warn",
+        "noParameterAssign": "warn"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "bracketSpacing": true,
+      "bracketSameLine": true,
+      "arrowParentheses": "always"
+    }
+  },
+  "css": {
+    "parser": {
+      "allowWrongLineComments": true,
+      "cssModules": true
+    },
+    "formatter": {
+      "quoteStyle": "single",
+      "indentWidth": 2
+    }
+  }
+}
