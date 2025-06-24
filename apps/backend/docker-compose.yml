@@ -1,13 +1,46 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: .docker/Dockerfile
+  mongo:
+    image: mongo:latest
     ports:
-      - "3000:${PORT}"
+      - 27017:27017
     environment:
-      - NODE_ENV=${NODE_ENV}
-      - API_BASE_URL=${API_BASE_URL}
-      - PORT=${PORT}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
-      - .:/build_
+      - mongo_data:/data/db
+    networks:
+      - test-connect-network
+    healthcheck:
+      test: ["CMD", "sh", "-c", "mongosh --quiet --eval 'db.adminCommand(\"ping\").ok' > /dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  app:
+    depends_on:
+      mongo:
+        condition: service_healthy
+    build:
+      context: ../../
+      dockerfile: apps/backend/.docker/Dockerfile
+    volumes:
+      - ./:/build_/apps/backend
+    environment:
+      PORT: ${PORT}
+      API_BASE_URL: ${API_BASE_URL}
+      MONGO_URI: ${MONGO_URI}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - test-connect-network
+
+networks:
+  test-connect-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
