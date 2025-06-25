@@ -9,15 +9,21 @@ dotenv.config();
 export interface Environment {
   PORT: number /*!< Port for the Express server */;
   API_BASE_URL: string /*!< Base url of the API */;
-  MONGO_URI: string /*!< URL of the database */;
   NODE_ENV: string /*!< Environment of the application */;
+  AWS_KEY: string /*!< AWS key for the application */;
+  AWS_SECRET: string /*!< AWS secret for the application */;
+  REGION: string /*!< Region for the application */;
+  AWS_BUCKET_NAME: string /*!< AWS bucket name for the application */;
 }
 
 const variables: { [key: string]: string | undefined } = {
   PORT: process.env.PORT,
   API_BASE_URL: process.env.API_BASE_URL,
-  MONGO_URI: process.env.MONGO_URI,
   NODE_ENV: process.env.NODE_ENV,
+  AWS_KEY: process.env.AWS_KEY,
+  AWS_SECRET: process.env.AWS_SECRET,
+  REGION: process.env.REGION,
+  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
 };
 
 for (const [key, value] of Object.entries(variables)) {
@@ -41,6 +47,9 @@ if (Number.isNaN(port)) {
 export const environment: Environment = {
   PORT: port,
   API_BASE_URL: process.env.API_BASE_URL as string,
-  MONGO_URI: process.env.MONGO_URI as string,
   NODE_ENV: process.env.NODE_ENV as string,
+  AWS_KEY: process.env.AWS_KEY as string,
+  AWS_SECRET: process.env.AWS_SECRET as string,
+  REGION: process.env.REGION as string,
+  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME as string,
 };
