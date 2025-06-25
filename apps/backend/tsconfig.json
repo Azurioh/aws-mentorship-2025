@@ -25,6 +25,7 @@
     "paths": {
       "@config/*": ["src/config/*"],
       "@core/*": ["src/core/*"],
+      "@entities/*": ["src/entities/*"],
       "@enums/*": ["src/enums/*"],
       "@routes/*": ["src/routes/*"],
       "@routes": ["src/routes"],
