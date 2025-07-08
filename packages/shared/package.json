@@ -3,5 +3,10 @@
   "version": "1.0.0",
   "exports": {
     "./enums/*": "./enums/*.ts"
+  },
+  "dependencies": {
+    "zod": "^3.25.67",
+    "zod-openapi": "^4.2.4",
+    "zod-to-json-schema": "^3.24.5"
   }
 }
