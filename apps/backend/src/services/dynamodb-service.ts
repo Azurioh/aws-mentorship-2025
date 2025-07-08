@@ -118,7 +118,6 @@ export default class DynamoService {
     try {
       return await docClient.send(new QueryCommand(params));
     } catch (error) {
-      console.error('error', error);
       throw new Error(`query-error: ${error}`);
     }
   };
