@@ -1,3 +1,4 @@
+import Logger from '@utils/logger';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -14,6 +15,7 @@ export interface Environment {
   AWS_SECRET: string /*!< AWS secret for the application */;
   REGION: string /*!< Region for the application */;
   AWS_BUCKET_NAME: string /*!< AWS bucket name for the application */;
+  JWT_SECRET: string /*!< JWT secret for the application */;
 }
 
 const variables: { [key: string]: string | undefined } = {
@@ -24,15 +26,16 @@ const variables: { [key: string]: string | undefined } = {
   AWS_SECRET: process.env.AWS_SECRET,
   REGION: process.env.REGION,
   AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
+  JWT_SECRET: process.env.JWT_SECRET,
 };
 
 for (const [key, value] of Object.entries(variables)) {
   if (value === undefined) {
-    console.error(`\r\x1b[31mError:\x1b[0m Variable ${key} is not defined`);
+    Logger.getInstance().error(`Variable ${key} is not defined`);
     process.exit(1);
   }
   if (value === '') {
-    console.error(`\r\x1b[31mError:\x1b[0m Variable ${key} is empty`);
+    Logger.getInstance().error(`Variable ${key} is empty`);
     process.exit(1);
   }
 }
@@ -40,7 +43,7 @@ for (const [key, value] of Object.entries(variables)) {
 const port = Number(variables.PORT);
 
 if (Number.isNaN(port)) {
-  console.error('\r\x1b[31mError:\x1b[0m Variable PORT is not a number');
+  Logger.getInstance().error('Variable PORT is not a number');
   process.exit(1);
 }
 
@@ -52,4 +55,5 @@ export const environment: Environment = {
   AWS_SECRET: process.env.AWS_SECRET as string,
   REGION: process.env.REGION as string,
   AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME as string,
+  JWT_SECRET: process.env.JWT_SECRET as string,
 };
