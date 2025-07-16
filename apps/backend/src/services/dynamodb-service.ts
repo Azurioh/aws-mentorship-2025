@@ -38,6 +38,7 @@ const credentials = {
 const dbParams: { region: string; credentials: { accessKeyId: string; secretAccessKey: string }; endpoint?: string } = {
   region: environment.REGION,
   credentials,
+  // endpoint: environment.NODE_ENV === "development" ? "http://localhost:8787" : undefined
 };
 
 const client = new DynamoDBClient(dbParams);
