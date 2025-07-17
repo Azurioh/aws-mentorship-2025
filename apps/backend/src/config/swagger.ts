@@ -20,6 +20,6 @@ export const setupSwagger = (app: FastifyInstance): void => {
   app.register(fastifySwaggerUi, {
     routePrefix: '/docs',
     staticCSP: true,
-    transformSpecification: (swaggerObject) => swaggerObject,
+    transformSpecification: (swaggerObject) => swaggerObject
   });
 };

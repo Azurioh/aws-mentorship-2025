@@ -6,8 +6,11 @@
     "dev": "nodemon src/index.ts"
   },
   "devDependencies": {
+    "@types/aws-lambda-fastify": "^1.4.5",
     "@types/jsonwebtoken": "^9.0.10",
+    "esbuild": "^0.25.6",
     "nodemon": "^3.1.10",
+    "serverless-esbuild": "^1.55.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0"
   },
@@ -21,9 +24,15 @@
     "@fastify/rate-limit": "^10.3.0",
     "@fastify/swagger": "^9.5.1",
     "@fastify/swagger-ui": "^5.2.3",
+    "@serverless/typescript": "^4.17.1",
     "chalk": "^5.4.1",
     "dotenv": "^16.5.0",
     "fastify": "^5.4.0",
-    "jsonwebtoken": "^9.0.2"
+    "fastify-plugin": "^5.0.1",
+    "json-schema-to-ts": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "serverless": "^3.40.0",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-plugin-typescript": "^2.1.5"
   }
 }

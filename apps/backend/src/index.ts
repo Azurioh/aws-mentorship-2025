@@ -8,7 +8,7 @@ import build from '@core/app';
  * @description Starts the server.
  */
 async function start(): Promise<void> {
-  const app = await build();
+  const app = build();
 
   await app.listen({ port: environment.PORT, host: '0.0.0.0' });
 }

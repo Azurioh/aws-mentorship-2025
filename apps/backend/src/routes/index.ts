@@ -1,6 +1,9 @@
 import type { FastifyInstance } from 'fastify';
-import healthRoute from './health';
+// import healthRoute from './health';
+import projects from './projects';
 
-export async function router(app: FastifyInstance): Promise<void> {
-  app.register(healthRoute, { prefix: '/health' });
+
+export const router = (app: FastifyInstance) => {
+  projects(app);
 }
+

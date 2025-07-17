@@ -8,21 +8,18 @@ import ajvFormats from 'ajv-formats';
 import fastify, { type FastifyInstance } from 'fastify';
 import { errorHandler, notFoundHandler } from '@config/error-handler';
 
-/**
- * @function build
- *
- * @description This function builds the Fastify application.
- *
- * @returns {Promise<FastifyInstance>} A promise that resolves to a Fastify instance.
- */
-async function build(): Promise<FastifyInstance> {
-  const app: FastifyInstance = fastify({
+const build = (): FastifyInstance => {
+  const app = fastify({
     bodyLimit: 10 * 1024 * 1024,
     ignoreTrailingSlash: true,
   });
 
   /*!> Setup decorators */
   setupDecorators(app);
+  
+  app.get('/docs-check', async () => {
+    return { status: 'ok' }
+  })
 
   /*!> Setup Fastify plugins */
   setupCors(app);
@@ -30,7 +27,9 @@ async function build(): Promise<FastifyInstance> {
   setupSwagger(app);
 
   /*!> Setup the routers */
-  app.register(apiRoutes);
+  // app.register(apiRoutes);
+
+  apiRoutes(app)
 
   /*!> Register the not found error handler */
   app.setNotFoundHandler(notFoundHandler);

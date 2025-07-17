@@ -14,7 +14,7 @@ export interface Environment {
   AWS_KEY: string /*!< AWS key for the application */;
   AWS_SECRET: string /*!< AWS secret for the application */;
   REGION: string /*!< Region for the application */;
-  AWS_BUCKET_NAME: string /*!< AWS bucket name for the application */;
+  PROJECTS_TABLE: string /*!< AWS bucket name for the application */;
   JWT_SECRET: string /*!< JWT secret for the application */;
 }
 
@@ -25,7 +25,7 @@ const variables: { [key: string]: string | undefined } = {
   AWS_KEY: process.env.AWS_KEY,
   AWS_SECRET: process.env.AWS_SECRET,
   REGION: process.env.REGION,
-  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
+  PROJECTS_TABLE: process.env.PROJECTS_TABLE,
   JWT_SECRET: process.env.JWT_SECRET,
 };
 
@@ -54,6 +54,6 @@ export const environment: Environment = {
   AWS_KEY: process.env.AWS_KEY as string,
   AWS_SECRET: process.env.AWS_SECRET as string,
   REGION: process.env.REGION as string,
-  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME as string,
+  PROJECTS_TABLE: process.env.PROJECTS_TABLE as string,
   JWT_SECRET: process.env.JWT_SECRET as string,
 };
