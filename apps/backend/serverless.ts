@@ -4,6 +4,8 @@ import dynamoTables from "./src/resources/dynamo-tables"
 
 dotenv.config();
 
+const COGNITO_USER_POOL_ARN = 'arn:aws:cognito-idp:eu-west-3:892091699078:userpool/eu-west-3_sPpNlCgcL';
+
 const serverlessConfiguration: AWS = {
   service: 'fastify-api',
   frameworkVersion: '3',
@@ -15,9 +17,9 @@ const serverlessConfiguration: AWS = {
     memorySize: 256,
     timeout: 10,
     stage: 'prod',
-    environment:{
-      PROJECTS_TABLE: process.env.PROJECTS_TABLE as string
-    }
+    environment: {
+      PROJECTS_TABLE: process.env.PROJECTS_TABLE as string,
+    },
   },
 
   plugins: [
@@ -37,15 +39,46 @@ const serverlessConfiguration: AWS = {
     api: {
       handler: 'src/handler.main',
       events: [
-        { http: { path: '/', method: 'any' } },
-        { http: { path: '/{proxy+}', method: 'any' } },
+        {
+          http: {
+            path: '/',
+            method: 'any',
+            cors: true,
+          },
+        },
+        {
+          http: {
+            path: '/{proxy+}',
+            method: 'any',
+            cors: true,
+            authorizer: {
+              type: 'COGNITO_USER_POOLS',
+              authorizerId: { Ref: 'ApiGatewayAuthorizer' },
+            },
+          },
+        },
       ],
     },
   },
 
   resources: {
-    Resources: { ...dynamoTables },
-  },
+    Resources: {
+      ...dynamoTables,
+
+      ApiGatewayAuthorizer: {
+        Type: 'AWS::ApiGateway::Authorizer',
+        Properties: {
+          Name: 'CognitoAuthorizer',
+          Type: 'COGNITO_USER_POOLS',
+          IdentitySource: 'method.request.header.Authorization',
+          RestApiId: {
+            Ref: 'ApiGatewayRestApi',
+          },
+          ProviderARNs: [COGNITO_USER_POOL_ARN],
+        },
+      },
+    },
+  },  
 };
 
 module.exports = serverlessConfiguration;

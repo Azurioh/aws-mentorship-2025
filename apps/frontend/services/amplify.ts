@@ -17,9 +17,9 @@ export const signUp = async (email: string, password: string, givenName: string,
 //   return await Auth.confirmSignUp(: email, code);
 // };
 
-// export const signIn = async (email: string, password: string) => {
-//   return await Auth.signIn(username: email, password);
-// };
+export const signIn = async (email: string, password: string) => {
+  return await Auth.signIn({ username: email, password: password});
+};
 
 // export const signOut = async () => {
 //   return await Auth.signOut();
