@@ -1,7 +1,6 @@
-
-import { FastifyInstance } from 'fastify'
-import Post from './Post'
+import type { FastifyInstance } from 'fastify';
+import CreateProject from './create-project';
 
 export default (app: FastifyInstance) => {
-    Post(app)
-}
+  CreateProject(app);
+};
