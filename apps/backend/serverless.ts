@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 import dotenv from 'dotenv';
-import dynamoTables from "./src/resources/dynamo-tables"
+import dynamoTables from './src/resources/dynamo-tables';
 
 dotenv.config();
 
@@ -18,14 +18,16 @@ const serverlessConfiguration: AWS = {
     timeout: 10,
     stage: 'prod',
     environment: {
+      NODE_ENV: process.env.NODE_ENV as string,
       PROJECTS_TABLE: process.env.PROJECTS_TABLE as string,
+      AWS_KEY: process.env.AWS_KEY as string,
+      AWS_SECRET: process.env.AWS_SECRET as string,
+      REGION: process.env.REGION as string,
+      STAGE: process.env.STAGE as string,
     },
   },
 
-  plugins: [
-    'serverless-esbuild',
-    'serverless-dotenv-plugin',
-  ],
+  plugins: ['serverless-esbuild', 'serverless-dotenv-plugin'],
 
   custom: {
     esbuild: {
@@ -78,7 +80,7 @@ const serverlessConfiguration: AWS = {
         },
       },
     },
-  },  
+  },
 };
 
 module.exports = serverlessConfiguration;
