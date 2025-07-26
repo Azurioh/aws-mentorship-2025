@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import handler from './handler';
-import { Body, Querystring, Params, Headers } from './schema'
+import { Body, Querystring, Params, Headers } from './schema';
 
 const PostProjects = (app: FastifyInstance) => {
   return app.route({
@@ -12,7 +12,7 @@ const PostProjects = (app: FastifyInstance) => {
       body: Body,
       querystring: Querystring,
       params: Params,
-      headers: Headers
+      headers: Headers,
     },
     handler,
   });
