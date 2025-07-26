@@ -1,15 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import handler from './handler';
-import { Body, Querystring, Params, Headers } from './schema';
+import { Querystring, Params, Headers } from './schema';
 
-const CreateProject = (app: FastifyInstance) => {
+const ListProjects = (app: FastifyInstance) => {
   return app.route({
-    method: 'POST',
+    method: 'GET',
     url: '/projects',
     schema: {
       tags: ['projects'],
       description: '',
-      body: Body,
       querystring: Querystring,
       params: Params,
       headers: Headers,
@@ -18,4 +17,4 @@ const CreateProject = (app: FastifyInstance) => {
   });
 };
 
-export default CreateProject;
+export default ListProjects;

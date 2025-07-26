@@ -29,6 +29,7 @@
       "@enums/*": ["src/enums/*"],
       "@routes/*": ["src/routes/*"],
       "@routes": ["src/routes"],
+      "@repositories/*": ["src/repositories/*"],
       "@utils/*": ["src/utils/*"]
     }
   }
