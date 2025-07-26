@@ -96,3 +96,5 @@ export const ProjectSchema = z.object({
   ...ProjectFields.createdAt,
   ...ProjectFields.updatedAt,
 });
+
+export type TProject = z.infer<typeof ProjectSchema>;
