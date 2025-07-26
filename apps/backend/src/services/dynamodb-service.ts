@@ -165,3 +165,5 @@ export default class DynamoService {
     }
   };
 }
+
+export const dynamoServiceInstance = new DynamoService();
