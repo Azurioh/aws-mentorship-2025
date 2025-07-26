@@ -2,7 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import handler from './handler';
 import { Body, Querystring, Params, Headers } from './schema';
 
-const PostProjects = (app: FastifyInstance) => {
+const CreatProject = (app: FastifyInstance) => {
   return app.route({
     method: 'POST',
     url: '/projects',
@@ -18,4 +18,4 @@ const PostProjects = (app: FastifyInstance) => {
   });
 };
 
-export default PostProjects;
+export default CreatProject;
