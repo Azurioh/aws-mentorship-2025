@@ -3,4 +3,5 @@ import build from '@core/app';
 import { fastify } from 'fastify';
 
 const app = build() as ReturnType<typeof fastify>;
-export const main = awsLambdaFastify(app);
+const proxy = awsLambdaFastify(app, { binaryMimeTypes: [] }); // ajoute cette ligne
+export const main = (event: any, context: any) => proxy(event, context)

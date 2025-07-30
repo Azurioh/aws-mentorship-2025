@@ -10,7 +10,6 @@ const handler = async (
     }>,
     res: FastifyReply
 ) => {
-    console.log(req.body.name)
     return res.status(200).send({ msg: "yes" });
 };
 
