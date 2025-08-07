@@ -10,7 +10,7 @@ const handler = async (
   }>,
   res: FastifyReply,
 ) => {
-  const projects = await listProjects();
+  const projects = await listProjects('b9547ad8-3d5e-42d1-93a9-aa49503d4b4a');
 
   return res.success(projects);
 };

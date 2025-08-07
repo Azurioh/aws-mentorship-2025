@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import { Body, Params, Querystring, Headers } from './schema';
+import { ParamsJson, QuerystringJson, HeadersJson } from './schema';
 import handler from './handler';
 
 const DeleteProject = (app: FastifyInstance) => {
@@ -9,10 +9,9 @@ const DeleteProject = (app: FastifyInstance) => {
     schema: {
       tags: ['projects'],
       description: '',
-      body: Body,
-      querystring: Querystring,
-      params: Params,
-      headers: Headers,
+      querystring: QuerystringJson,
+      params: ParamsJson,
+      headers: HeadersJson,
     },
     handler,
   });

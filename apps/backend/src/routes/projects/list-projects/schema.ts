@@ -1,13 +1,23 @@
-import type { FromSchema } from 'json-schema-to-ts';
+import { z } from 'zod';
+import zodToJsonSchema from 'zod-to-json-schema';
 
-export const Params = {};
+export const Params = z.object({}).passthrough();
 
-export type TParams = FromSchema<typeof Params>;
+export const ParamsJson = zodToJsonSchema(Params) as never;
 
-export const Headers = {};
+export type TParams = z.infer<typeof Params>;
+export type TParamsJson = typeof ParamsJson;
 
-export type THeaders = FromSchema<typeof Headers>;
+export const Headers = z.object({}).passthrough();
 
-export const Querystring = {};
+export const HeadersJson = zodToJsonSchema(Headers) as never;
 
-export type TQuerystring = FromSchema<typeof Querystring>;
+export type THeaders = z.infer<typeof Headers>;
+export type THeadersJson = typeof HeadersJson;
+
+export const Querystring = z.object({}).passthrough();
+
+export const QuerystringJson = zodToJsonSchema(Querystring) as never;
+
+export type TQuerystring = z.infer<typeof Querystring>;
+export type TQuerystringJson = typeof QuerystringJson;

@@ -1,11 +1,11 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { Body, BodyToData, type TBody, type THeaders, type TParams, type TQuerystring } from './schema';
+import { Body, BodyToData, type TBodyJson, type THeaders, type TParams, type TQuerystring } from './schema';
 import { HttpStatusCode } from '@test-connect/shared/enums/http-status';
 import { createProject } from './db-access';
 
 const handler = async (
   req: FastifyRequest<{
-    Body: TBody;
+    Body: TBodyJson;
     Headers: THeaders;
     Params: TParams;
     Querystring: TQuerystring;
@@ -15,9 +15,9 @@ const handler = async (
   const body = Body.parse(req.body);
   const data = BodyToData(body);
 
-  const project = await createProject(data);
+  await createProject(data);
 
-  return res.success(project, HttpStatusCode.created);
+  return res.success(data, HttpStatusCode.created);
 };
 
 export default handler;

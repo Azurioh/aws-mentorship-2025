@@ -14,6 +14,8 @@ export const createProject = async (data: TData) => {
       Item: data,
     };
 
+    console.log(tableSelector(environment.PROJECTS_TABLE));
+
     return dynamoServiceInstance.create(input);
   } catch (error) {
     console.error(error);

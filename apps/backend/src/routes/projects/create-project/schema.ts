@@ -1,7 +1,7 @@
-import type { FromSchema } from 'json-schema-to-ts';
 import { ProjectFields } from '@test-connect/shared/schemas/project';
 import { z } from 'zod';
 import { v4 } from 'uuid';
+import zodToJsonSchema from 'zod-to-json-schema';
 
 export const Body = z.object({
   ...ProjectFields.name,
@@ -9,22 +9,35 @@ export const Body = z.object({
   ...ProjectFields.state,
   ...ProjectFields.budget,
   ...ProjectFields.duration,
-  ...ProjectFields.developerUserId,
+  ...ProjectFields.ownerId,
 });
+
+export const BodyJson = zodToJsonSchema(Body) as never;
 
 export type TBody = z.infer<typeof Body>;
 
-export const Params = {};
+export type TBodyJson = typeof BodyJson;
 
-export type TParams = FromSchema<typeof Params>;
+export const Params = z.object({}).passthrough();
 
-export const Headers = {};
+export const ParamsJson = zodToJsonSchema(Params) as never;
 
-export type THeaders = FromSchema<typeof Headers>;
+export type TParams = z.infer<typeof Params>;
+export type TParamsJson = typeof ParamsJson;
 
-export const Querystring = {};
+export const Headers = z.object({}).passthrough();
 
-export type TQuerystring = FromSchema<typeof Querystring>;
+export const HeadersJson = zodToJsonSchema(Headers) as never;
+
+export type THeaders = z.infer<typeof Headers>;
+export type THeadersJson = typeof HeadersJson;
+
+export const Querystring = z.object({}).passthrough();
+
+export const QuerystringJson = zodToJsonSchema(Querystring) as never;
+
+export type TQuerystring = z.infer<typeof Querystring>;
+export type TQuerystringJson = typeof QuerystringJson;
 
 export const Data = Body.and(
   z.object({
@@ -40,7 +53,7 @@ export const BodyToData = (body: TBody): TData => {
   return Data.parse({
     ...body,
     id: v4(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   });
 };

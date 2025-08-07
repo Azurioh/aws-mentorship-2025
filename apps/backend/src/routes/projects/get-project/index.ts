@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import handler from './handler';
-import { Querystring, Params, Headers } from './schema';
+import { Querystring, ParamsJson, Headers } from './schema';
 
 const GetProject = (app: FastifyInstance) => {
   return app.route({
@@ -10,7 +10,7 @@ const GetProject = (app: FastifyInstance) => {
       tags: ['projects'],
       description: '',
       querystring: Querystring,
-      params: Params,
+      params: ParamsJson,
       headers: Headers,
     },
     handler,
