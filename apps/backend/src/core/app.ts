@@ -1,13 +1,13 @@
 import { setupCors } from '@config/cors';
 import { setupDecorators } from '@config/decorators/setupDecorators';
+import { environment } from '@config/environment';
+import { errorHandler, notFoundHandler } from '@config/error-handler';
 import { setupRateLimit } from '@config/rate-limit';
 import { setupSwagger } from '@config/swagger';
 import { router as apiRoutes } from '@routes';
 import Ajv from 'ajv';
 import ajvFormats from 'ajv-formats';
 import fastify, { type FastifyInstance } from 'fastify';
-import { errorHandler, notFoundHandler } from '@config/error-handler';
-import { environment } from '@config/environment';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 const COGNITO_ISSUER = `https://cognito-idp.eu-west-3.amazonaws.com/${environment.COGNITO_ID}`;

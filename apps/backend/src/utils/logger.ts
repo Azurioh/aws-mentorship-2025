@@ -50,9 +50,8 @@ class Logger extends Singleton<Logger> {
    */
   private writeToFile(message: string): void {
     if (environment && environment.NODE_ENV === 'development') {
-
       const messageWithoutColors = stripColor(message);
-  
+
       fs.appendFileSync(this.getLogFile(), `${messageWithoutColors}\n`);
     }
   }
