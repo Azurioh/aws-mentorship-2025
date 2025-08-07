@@ -47,7 +47,7 @@ jobs:
         run: npx @biomejs/biome lint apps/backend/src
 
       - name: Format check with Biome
-        run: npx @biomejs/biome check --apply-unsafe apps/backend/src
+        run: npx @biomejs/biome check apps/backend/src
 
       - name: Type check
         run: npm run backend:build

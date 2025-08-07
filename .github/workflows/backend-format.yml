@@ -28,7 +28,7 @@ jobs:
           version: latest
 
       - name: Check formatting
-        run: npx @biomejs/biome check --apply-unsafe apps/backend/src
+        run: npx @biomejs/biome check apps/backend/src
 
       - name: Check linting
         run: npx @biomejs/biome lint apps/backend/src
