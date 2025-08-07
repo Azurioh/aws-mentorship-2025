@@ -25,7 +25,7 @@
     "@fastify/swagger": "^9.5.1",
     "@fastify/swagger-ui": "^5.2.3",
     "@serverless/typescript": "^4.17.1",
-    "@test-connect/shared": "workspace:*",
+    "@test-connect/shared": "*",
     "ajv": "^8.17.3",
     "ajv-formats": "^3.1.0",
     "chalk": "^5.4.1",
