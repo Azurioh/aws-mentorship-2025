@@ -32,7 +32,7 @@ export const errorHandler = (error: unknown, _req: FastifyRequest, reply: Fastif
     if (error instanceof Ajv.ValidationError) {
       Logger.getInstance().error(error.message);
     } else {
-      Logger.getInstance().error(error.errors.map((error) => error.message).join(', '));
+      Logger.getInstance().error(error.errors.map((err) => err.message).join(', '));
     }
 
     reply.status(HttpStatusCode.badRequest).send({

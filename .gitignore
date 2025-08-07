@@ -7,3 +7,6 @@ dist
 .serverless
 
 .build
+
+apps/backend/build
+*.js

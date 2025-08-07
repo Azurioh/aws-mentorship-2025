@@ -25,6 +25,9 @@
     "@fastify/swagger": "^9.5.1",
     "@fastify/swagger-ui": "^5.2.3",
     "@serverless/typescript": "^4.17.1",
+    "@test-connect/shared": "workspace:*",
+    "ajv": "^8.17.3",
+    "ajv-formats": "^3.1.0",
     "chalk": "^5.4.1",
     "dotenv": "^16.5.0",
     "fastify": "^5.4.0",
@@ -34,6 +37,7 @@
     "jsonwebtoken": "^9.0.2",
     "serverless": "^3.40.0",
     "serverless-dotenv-plugin": "^6.0.0",
-    "serverless-plugin-typescript": "^2.1.5"
+    "serverless-plugin-typescript": "^2.1.5",
+    "zod": "^3.25.67"
   }
 }

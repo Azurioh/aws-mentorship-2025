@@ -1,8 +1,17 @@
 {
   "name": "@test-connect/shared",
   "version": "1.0.0",
+  "main": "index.ts",
+  "types": "index.ts",
   "exports": {
-    "./enums/*": "./enums/*.ts"
+    ".": "./index.ts",
+    "./enums/errors": "./enums/errors.ts",
+    "./enums/http-status": "./enums/http-status.ts",
+    "./enums/mime-type": "./enums/mime-type.ts",
+    "./enums/project": "./enums/project.ts",
+    "./enums/user": "./enums/user.ts",
+    "./schemas/project": "./schemas/project.ts",
+    "./schemas/user": "./schemas/user.ts"
   },
   "dependencies": {
     "zod": "^3.25.67",
