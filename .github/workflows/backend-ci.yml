@@ -36,7 +36,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: apps/backend
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Install Biome
         uses: biomejs/setup-biome@v1
@@ -82,7 +82,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: apps/backend
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Run npm audit
         run: npm audit --audit-level=moderate

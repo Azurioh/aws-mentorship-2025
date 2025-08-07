@@ -1,0 +1,92 @@
+# name: Backend Deploy
+
+# on:
+#   push:
+#     branches: [main]
+#     paths:
+#       - 'apps/backend/**'
+#       - 'packages/**'
+#       - '.github/workflows/backend-deploy.yml'
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         description: 'Environment to deploy to'
+#         required: true
+#         default: 'staging'
+#         type: choice
+#         options:
+#           - staging
+#           - production
+
+# jobs:
+#   deploy:
+#     name: Deploy Backend
+#     runs-on: ubuntu-latest
+
+#     environment: ${{ github.event.inputs.environment || 'staging' }}
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 20
+#           cache: 'npm'
+#           cache-dependency-path: '**/package-lock.json'
+
+#       - name: Install dependencies
+#         run: npm ci --legacy-peer-deps
+
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v4
+#         with:
+#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           aws-region: eu-west-3
+
+#       - name: Install Serverless Framework
+#         run: npm install -g serverless
+
+#       - name: Deploy to AWS
+#         working-directory: apps/backend
+#         run: |
+#           serverless deploy \
+#             --stage ${{ github.event.inputs.environment || 'staging' }} \
+#             --verbose
+#         env:
+#           PROJECTS_TABLE: ${{ secrets.PROJECTS_TABLE }}
+#           NOTIFICATIONS_TABLE: ${{ secrets.NOTIFICATIONS_TABLE }}
+#           AWS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           REGION: eu-west-3
+#           STAGE: ${{ github.event.inputs.environment || 'staging' }}
+
+#       - name: Get deployment info
+#         working-directory: apps/backend
+#         run: |
+#           serverless info --stage ${{ github.event.inputs.environment || 'staging' }}
+#         env:
+#           PROJECTS_TABLE: ${{ secrets.PROJECTS_TABLE }}
+#           NOTIFICATIONS_TABLE: ${{ secrets.NOTIFICATIONS_TABLE }}
+#           AWS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           REGION: eu-west-3
+#           STAGE: ${{ github.event.inputs.environment || 'staging' }}
+
+#   notify:
+#     name: Notify Deployment
+#     runs-on: ubuntu-latest
+#     needs: deploy
+#     if: always()
+
+#     steps:
+#       - name: Notify Slack
+#         uses: 8398a7/action-slack@v3
+#         with:
+#           status: ${{ job.status }}
+#           channel: '#deployments'
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         if: failure()
