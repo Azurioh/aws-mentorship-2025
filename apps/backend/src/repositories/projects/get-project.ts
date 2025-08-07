@@ -1,4 +1,4 @@
-import type { GetCommandInput } from '@aws-sdk/lib-dynamodb';
+import type { QueryCommandInput } from '@aws-sdk/lib-dynamodb';
 import { environment } from '@config/environment';
 import { Errors } from '@test-connect/shared/enums/errors';
 import { HttpStatusCode } from '@test-connect/shared/enums/http-status';
@@ -8,21 +8,20 @@ import tableSelector from '@utils/table-selector';
 import { dynamoServiceInstance } from 'src/services/dynamodb-service';
 
 export const getProject = async (projectId: string): Promise<TProject> => {
-  const params: GetCommandInput = {
+  const gsiParams: QueryCommandInput = {
     TableName: tableSelector(environment.PROJECTS_TABLE),
-    Key: { id: projectId },
+    IndexName: 'ProjectIdIndex',
+    KeyConditionExpression: 'id = :projectId',
+    ExpressionAttributeValues: {
+      ':projectId': projectId,
+    },
   };
 
-  try {
-    const result = await dynamoServiceInstance.get(params);
+  const result = await dynamoServiceInstance.query(gsiParams);
 
-    return result as unknown as TProject;
-  } catch (error) {
-    console.error(error);
-    throw new ApiError(
-      HttpStatusCode.internalServerError,
-      Errors.INTERNAL_SERVER_ERROR,
-      'An error occured while getting the project',
-    );
+  if (!result.Items || result.Items.length === 0) {
+    throw new ApiError(HttpStatusCode.notFound, Errors.RESOURCE_NOT_FOUND, 'Project not found');
   }
+
+  return result.Items[0] as unknown as TProject;
 };
