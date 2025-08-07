@@ -2,7 +2,8 @@
   "name": "@test-connect/shared",
   "version": "1.0.0",
   "exports": {
-    "./enums/*": "./enums/*.ts"
+    "./enums/*": "./enums/*.ts",
+    "./schemas/*": "./schemas/*.ts"
   },
   "dependencies": {
     "zod": "^3.25.67",
