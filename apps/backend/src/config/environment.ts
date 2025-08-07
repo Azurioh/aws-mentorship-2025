@@ -15,6 +15,7 @@ export interface Environment {
   AWS_SECRET: string /*!< AWS secret for the application */;
   REGION: string /*!< Region for the application */;
   PROJECTS_TABLE: string /*!< AWS bucket name for the application */;
+  AWS_BUCKET_NAME: string /*!< AWS bucket name for the application */;
   JWT_SECRET: string /*!< JWT secret for the application */;
   COGNITO_ID: string /*!< User pool id */;
 }
@@ -27,8 +28,9 @@ const variables: { [key: string]: string | undefined } = {
   AWS_SECRET: process.env.AWS_SECRET,
   REGION: process.env.REGION,
   PROJECTS_TABLE: process.env.PROJECTS_TABLE,
+  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
   JWT_SECRET: process.env.JWT_SECRET,
-  COGNITO_ID: process.env.COGNITO_ID
+  COGNITO_ID: process.env.COGNITO_ID,
 };
 
 for (const [key, value] of Object.entries(variables)) {
@@ -57,6 +59,7 @@ export const environment: Environment = {
   AWS_SECRET: process.env.AWS_SECRET as string,
   REGION: process.env.REGION as string,
   PROJECTS_TABLE: process.env.PROJECTS_TABLE as string,
+  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME as string,
   JWT_SECRET: process.env.JWT_SECRET as string,
   COGNITO_ID: process.env.COGNITO_ID as string,
 };

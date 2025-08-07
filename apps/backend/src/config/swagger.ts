@@ -1,6 +1,6 @@
+import { environment } from '@config/environment';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
-import { environment } from '@config/environment';
 import type { FastifyInstance } from 'fastify';
 
 export const setupSwagger = (app: FastifyInstance): void => {
@@ -20,6 +20,6 @@ export const setupSwagger = (app: FastifyInstance): void => {
   app.register(fastifySwaggerUi, {
     routePrefix: '/docs',
     staticCSP: true,
-    transformSpecification: (swaggerObject) => swaggerObject
+    transformSpecification: (swaggerObject) => swaggerObject,
   });
 };

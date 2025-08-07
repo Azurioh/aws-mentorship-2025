@@ -5,14 +5,14 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { environment } from '@config/environment';
-import getExtension from '@utils/get-ext';
-import type { Directory, S3PutSingleObjectInput, S3PutSingleObjectOutput, UrlId } from '@entities/s3';
-import { v4 } from 'uuid';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import ApiError from '@utils/api-error';
-import { HttpStatusCode } from '@test-connect/shared/enums/http-status';
+import { environment } from '@config/environment';
+import type { Directory, S3PutSingleObjectInput, S3PutSingleObjectOutput, UrlId } from '@entities/s3';
 import { Errors } from '@test-connect/shared/enums/errors';
+import { HttpStatusCode } from '@test-connect/shared/enums/http-status';
+import ApiError from '@utils/api-error';
+import getExtension from '@utils/get-ext';
+import { v4 } from 'uuid';
 
 /**
  * @class S3Service

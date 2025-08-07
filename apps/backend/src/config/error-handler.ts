@@ -1,11 +1,11 @@
-import { HttpStatusCode } from '@test-connect/shared/enums/http-status';
-import Logger from '@utils/logger';
-import type { FastifyRequest, FastifyReply } from 'fastify';
-import Ajv from 'ajv';
-import { z } from 'zod';
-import ApiError from '@utils/api-error';
 import { environment } from '@config/environment';
 import { Errors } from '@test-connect/shared/enums/errors';
+import { HttpStatusCode } from '@test-connect/shared/enums/http-status';
+import ApiError from '@utils/api-error';
+import Logger from '@utils/logger';
+import Ajv from 'ajv';
+import type { FastifyReply, FastifyRequest } from 'fastify';
+import { z } from 'zod';
 
 export const notFoundHandler = (req: FastifyRequest, reply: FastifyReply): void => {
   reply.error(`The resource ${req.url} doesn't exist`, HttpStatusCode.notFound, Errors.ROUTE_NOT_FOUND);
@@ -32,7 +32,7 @@ export const errorHandler = (error: unknown, _req: FastifyRequest, reply: Fastif
     if (error instanceof Ajv.ValidationError) {
       Logger.getInstance().error(error.message);
     } else {
-      Logger.getInstance().error(error.errors.map((error) => error.message).join(', '));
+      Logger.getInstance().error(error.errors.map((err) => err.message).join(', '));
     }
 
     reply.status(HttpStatusCode.badRequest).send({

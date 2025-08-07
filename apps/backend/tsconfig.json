@@ -20,7 +20,6 @@
     /* Path */
     "outDir": "build",
     "typeRoots": ["./node_modules/@types", "./src/types"],
-    "rootDir": ".",
     "baseUrl": ".",
     "paths": {
       "@config/*": ["src/config/*"],
@@ -29,7 +28,16 @@
       "@enums/*": ["src/enums/*"],
       "@routes/*": ["src/routes/*"],
       "@routes": ["src/routes"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@test-connect/shared/*": ["../../packages/shared/*"]
     }
-  }
+  },
+  "include": [
+    "src/**/*",
+    "../../packages/shared/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }

@@ -1,5 +1,5 @@
-import { HttpStatusCode } from '@test-connect/shared/enums/http-status';
 import { Errors } from '@test-connect/shared/enums/errors';
+import { HttpStatusCode } from '@test-connect/shared/enums/http-status';
 import ApiError from './api-error';
 
 /**

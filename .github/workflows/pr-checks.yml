@@ -1,0 +1,144 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  check-pr-title:
+    name: Check PR Title Convention
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR title format
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+
+  auto-assign:
+    name: Auto Assign PR
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.assignees == null || github.event.pull_request.assignees == ''
+
+    steps:
+      - name: Auto-assign PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+
+            // Auto-assign the PR author
+            await github.rest.issues.addAssignees({
+              owner,
+              repo,
+              issue_number: number,
+              assignees: [context.payload.pull_request.user.login]
+            });
+
+            // Add the PR author as a reviewer
+            await github.rest.pulls.requestReviewers({
+              owner,
+              repo,
+              pull_number: number,
+              reviewers: [context.payload.pull_request.user.login]
+            });
+
+            console.log(`Auto-assigned PR #${number} to ${context.payload.pull_request.user.login}`);
+
+  check-pr-description:
+    name: Check PR Description
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR description length
+        run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+          MIN_LENGTH=10
+
+          if [ ${#PR_BODY} -lt $MIN_LENGTH ]; then
+            echo "❌ PR description is too short. Please provide a more detailed description."
+            echo "Current length: ${#PR_BODY} characters"
+            echo "Minimum required: $MIN_LENGTH characters"
+            exit 1
+          else
+            echo "✅ PR description meets minimum length requirement"
+          fi
+
+  check-branch-naming:
+    name: Check Branch Naming
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check branch naming convention
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+
+          # Check if branch name follows convention: type/description
+          if [[ ! $BRANCH_NAME =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)/[a-z0-9-]+$ ]]; then
+            echo "❌ Branch name '$BRANCH_NAME' doesn't follow the naming convention."
+            echo "Expected format: type/description (e.g., feat/add-user-authentication)"
+            echo "Valid types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert"
+            exit 1
+          else
+            echo "✅ Branch name follows naming convention"
+          fi
+
+#   pr-size-check:
+#     name: Check PR Size
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Check PR size
+#         run: |
+#           ADDITIONS=${{ github.event.pull_request.additions }}
+#           DELETIONS=${{ github.event.pull_request.deletions }}
+#           TOTAL_CHANGES=$((ADDITIONS + DELETIONS))
+
+#           echo "PR Size Analysis:"
+#           echo "- Additions: $ADDITIONS"
+#           echo "- Deletions: $DELETIONS"
+#           echo "- Total changes: $TOTAL_CHANGES"
+
+#           if [ $TOTAL_CHANGES -gt 500 ]; then
+#             echo "⚠️  This PR is quite large ($TOTAL_CHANGES changes). Consider breaking it into smaller PRs."
+#           elif [ $TOTAL_CHANGES -gt 1000 ]; then
+#             echo "❌ This PR is too large ($TOTAL_CHANGES changes). Please break it into smaller PRs."
+#             exit 1
+#           else
+#             echo "✅ PR size is reasonable"
+#           fi
+
+  check-labels:
+    name: Check PR Labels
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if PR has appropriate labels
+        run: |
+          LABELS="${{ github.event.pull_request.labels.*.name }}"
+
+          if [ -z "$LABELS" ]; then
+            echo "⚠️  This PR doesn't have any labels. Consider adding relevant labels like:"
+            echo "   - enhancement (for new features)"
+            echo "   - bug (for bug fixes)"
+            echo "   - documentation (for docs changes)"
+            echo "   - dependencies (for dependency updates)"
+          else
+            echo "✅ PR has labels: $LABELS"
+          fi

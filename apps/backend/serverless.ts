@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 import dotenv from 'dotenv';
-import dynamoTables from "./src/resources/dynamo-tables"
+import dynamoTables from './src/resources/dynamo-tables';
 
 dotenv.config();
 
@@ -19,13 +19,15 @@ const serverlessConfiguration: AWS = {
     stage: 'prod',
     environment: {
       PROJECTS_TABLE: process.env.PROJECTS_TABLE as string,
+      NOTIFICATIONS_TABLE: process.env.NOTIFICATIONS_TABLE as string,
+      AWS_KEY: process.env.AWS_KEY as string,
+      AWS_SECRET: process.env.AWS_SECRET as string,
+      REGION: process.env.REGION as string,
+      STAGE: process.env.STAGE as string,
     },
   },
 
-  plugins: [
-    'serverless-esbuild',
-    'serverless-dotenv-plugin',
-  ],
+  plugins: ['serverless-esbuild', 'serverless-dotenv-plugin'],
 
   custom: {
     esbuild: {
@@ -51,10 +53,10 @@ const serverlessConfiguration: AWS = {
             path: '/{proxy+}',
             method: 'any',
             cors: true,
-            authorizer: {
-              type: 'COGNITO_USER_POOLS',
-              authorizerId: { Ref: 'ApiGatewayAuthorizer' },
-            },
+            // authorizer: {
+            //   type: 'COGNITO_USER_POOLS',
+            //   authorizerId: { Ref: 'ApiGatewayAuthorizer' },
+            // },
           },
         },
       ],
@@ -78,7 +80,7 @@ const serverlessConfiguration: AWS = {
         },
       },
     },
-  },  
+  },
 };
 
 module.exports = serverlessConfiguration;
