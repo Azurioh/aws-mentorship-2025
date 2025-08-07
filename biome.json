@@ -17,7 +17,6 @@
   },
   "linter": {
     "enabled": true,
-    "ignore": ["*.css"],
     "rules": {
       "recommended": true,
       "a11y": {
