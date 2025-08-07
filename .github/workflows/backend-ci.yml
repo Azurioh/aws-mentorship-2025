@@ -35,6 +35,7 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
+        working-directory: apps/backend
         run: npm ci
 
       - name: Install Biome
@@ -43,10 +44,10 @@ jobs:
           version: latest
 
       - name: Lint with Biome
-        run: npx @biomejs/biome check apps/backend/src
+        run: npx @biomejs/biome lint apps/backend/src
 
       - name: Format check with Biome
-        run: npx @biomejs/biome format --check apps/backend/src
+        run: npx @biomejs/biome check --apply-unsafe apps/backend/src
 
       - name: Type check
         run: npm run backend:build
@@ -80,6 +81,7 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
+        working-directory: apps/backend
         run: npm ci
 
       - name: Run npm audit

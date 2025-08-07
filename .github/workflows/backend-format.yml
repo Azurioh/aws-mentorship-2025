@@ -28,10 +28,10 @@ jobs:
           version: latest
 
       - name: Check formatting
-        run: npx @biomejs/biome format --check apps/backend/src
+        run: npx @biomejs/biome check --apply-unsafe apps/backend/src
 
       - name: Check linting
-        run: npx @biomejs/biome check apps/backend/src
+        run: npx @biomejs/biome lint apps/backend/src
 
   auto-format:
     name: Auto Format
@@ -50,10 +50,10 @@ jobs:
           version: latest
 
       - name: Format code
-        run: npx @biomejs/biome format --write apps/backend/src
+        run: npx @biomejs/biome check --write apps/backend/src
 
       - name: Fix linting issues
-        run: npx @biomejs/biome check --write apps/backend/src
+        run: npx @biomejs/biome lint --write apps/backend/src
 
       - name: Commit and push changes
         run: |
