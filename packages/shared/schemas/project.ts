@@ -29,7 +29,7 @@ export const ProjectField = {
     description: 'The duration of the project',
     example: 10,
   }),
-  developerUserId: z.string().uuid().openapi({
+  ownerId: z.string().uuid().openapi({
     description: 'The unique identifier for the developer',
     example: '123e4567-e89b-12d3-a456-426614174000',
   }),
@@ -74,7 +74,7 @@ export const ProjectFields = {
   state: { state: ProjectField.state },
   budget: { budget: ProjectField.budget },
   duration: { duration: ProjectField.duration },
-  developerUserId: { developerUserId: ProjectField.developerUserId },
+  ownerId: { ownerId: ProjectField.ownerId },
   haveTester: { haveTester: ProjectField.haveTester },
   testerUserId: { testerUserId: ProjectField.testerUserId },
   dueDate: { dueDate: ProjectField.dueDate },
@@ -89,7 +89,7 @@ export const ProjectSchema = z.object({
   ...ProjectFields.state,
   ...ProjectFields.budget,
   ...ProjectFields.duration,
-  ...ProjectFields.developerUserId,
+  ...ProjectFields.ownerId,
   ...ProjectFields.haveTester,
   ...ProjectFields.testerUserId,
   ...ProjectFields.dueDate,
