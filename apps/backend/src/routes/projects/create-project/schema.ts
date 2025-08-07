@@ -7,9 +7,7 @@ export const Body = z.object({
   ...ProjectFields.name,
   ...ProjectFields.description,
   ...ProjectFields.state,
-  ...ProjectFields.budget,
-  ...ProjectFields.duration,
-  ...ProjectFields.ownerId,
+  ...ProjectFields.dueDate,
 });
 
 export const BodyJson = zodToJsonSchema(Body) as never;

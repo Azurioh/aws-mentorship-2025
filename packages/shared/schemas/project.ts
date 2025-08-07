@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { extendZodWithOpenApi } from 'zod-openapi';
 import { ProjectState } from '@test-connect/shared/enums/project';
+import { UserFields } from './user';
 
 extendZodWithOpenApi(z);
 
@@ -21,26 +22,9 @@ export const ProjectField = {
     description: 'The state of the project',
     example: ProjectState.WAITING_TESTER,
   }),
-  budget: z.number().positive().openapi({
-    description: 'The budget of the project',
-    example: 1000,
-  }),
-  duration: z.number().positive().openapi({
-    description: 'The duration of the project',
-    example: 10,
-  }),
-  ownerId: z.string().uuid().openapi({
-    description: 'The unique identifier for the developer',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  }),
-  haveTester: z.boolean().openapi({
-    description: 'Whether the project has a tester',
-    example: true,
-  }),
-  testerUserId: z.string().uuid().optional().openapi({
-    description: 'The unique identifier for the tester',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  }),
+  ownerId: UserFields.id,
+  volunteersIds: z.array(UserFields.id),
+  testerUserId: UserFields.id.nullable(),
   dueDate: z.date().openapi({
     description: 'The due date of the project',
     example: new Date(),
@@ -72,10 +56,8 @@ export const ProjectFields = {
   name: { name: ProjectField.name },
   description: { description: ProjectField.description },
   state: { state: ProjectField.state },
-  budget: { budget: ProjectField.budget },
-  duration: { duration: ProjectField.duration },
   ownerId: { ownerId: ProjectField.ownerId },
-  haveTester: { haveTester: ProjectField.haveTester },
+  volunteersIds: { volunteersIds: ProjectField.volunteersIds },
   testerUserId: { testerUserId: ProjectField.testerUserId },
   dueDate: { dueDate: ProjectField.dueDate },
   createdAt: { createdAt: ProjectField.createdAt },
@@ -87,10 +69,8 @@ export const ProjectSchema = z.object({
   ...ProjectFields.name,
   ...ProjectFields.description,
   ...ProjectFields.state,
-  ...ProjectFields.budget,
-  ...ProjectFields.duration,
   ...ProjectFields.ownerId,
-  ...ProjectFields.haveTester,
+  ...ProjectFields.volunteersIds,
   ...ProjectFields.testerUserId,
   ...ProjectFields.dueDate,
   ...ProjectFields.createdAt,
