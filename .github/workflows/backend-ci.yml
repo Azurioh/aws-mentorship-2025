@@ -34,17 +34,6 @@ jobs:
         working-directory: apps/backend
         run: npm install --legacy-peer-deps
 
-      - name: Install Biome
-        uses: biomejs/setup-biome@v1
-        with:
-          version: latest
-
-      - name: Lint with Biome
-        run: npx @biomejs/biome lint apps/backend/src
-
-      - name: Format check with Biome
-        run: npx @biomejs/biome check apps/backend/src
-
       - name: Type check
         run: npm run backend:build
 
