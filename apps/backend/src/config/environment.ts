@@ -14,6 +14,7 @@ export interface Environment {
   REGION: string /*!< Region for the application */;
   STAGE: string /*!< Stage for the application */;
   PROJECTS_TABLE: string /*!< AWS bucket name for the application */;
+  NOTIFICATIONS_TABLE: string /*!< Notifications table name for the application */;
   JWT_SECRET: string /*!< JWT secret for the application */;
   COGNITO_ID: string /*!< User pool id */;
 }
@@ -25,6 +26,7 @@ const variables: { [key: string]: string | undefined } = {
   REGION: process.env.REGION,
   STAGE: process.env.STAGE,
   PROJECTS_TABLE: process.env.PROJECTS_TABLE,
+  NOTIFICATIONS_TABLE: process.env.NOTIFICATIONS_TABLE,
   JWT_SECRET: process.env.JWT_SECRET,
   COGNITO_ID: process.env.COGNITO_ID,
 };
@@ -47,6 +49,7 @@ export const environment: Environment = {
   REGION: process.env.REGION as string,
   STAGE: process.env.STAGE as string,
   PROJECTS_TABLE: process.env.PROJECTS_TABLE as string,
+  NOTIFICATIONS_TABLE: process.env.NOTIFICATIONS_TABLE as string,
   JWT_SECRET: process.env.JWT_SECRET as string,
   COGNITO_ID: process.env.COGNITO_ID as string,
 };
