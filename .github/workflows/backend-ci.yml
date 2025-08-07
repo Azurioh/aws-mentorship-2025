@@ -19,18 +19,14 @@ jobs:
     name: Backend CI
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18, 20]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
@@ -60,7 +56,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: backend-build-${{ matrix.node-version }}
+          name: backend-build
           path: apps/backend/dist/
           retention-days: 7
 
