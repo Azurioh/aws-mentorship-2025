@@ -1,0 +1,63 @@
+defaultAssignees:
+  - ${{ github.event.pull_request.user.login }}
+
+defaultReviewers:
+  - ${{ github.event.pull_request.user.login }}
+
+assignees:
+  - files:
+      - 'apps/backend/**'
+    assignees:
+      - ${{ github.event.pull_request.user.login }}
+    reviewers:
+      - ${{ github.event.pull_request.user.login }}
+
+  - files:
+      - 'apps/frontend/**'
+    assignees:
+      - ${{ github.event.pull_request.user.login }}
+    reviewers:
+      - ${{ github.event.pull_request.user.login }}
+
+  - files:
+      - 'packages/**'
+    assignees:
+      - ${{ github.event.pull_request.user.login }}
+    reviewers:
+      - ${{ github.event.pull_request.user.login }}
+
+  - files:
+      - '**/*.md'
+      - 'docs/**'
+    assignees:
+      - ${{ github.event.pull_request.user.login }}
+    reviewers:
+      - ${{ github.event.pull_request.user.login }}
+
+  - files:
+      - '.github/workflows/**'
+    assignees:
+      - ${{ github.event.pull_request.user.login }}
+    reviewers:
+      - ${{ github.event.pull_request.user.login }}
+
+labelAssignees:
+  - label: 'bug'
+    assignees:
+      - ${{ github.event.pull_request.user.login }}
+  - label: 'enhancement'
+    assignees:
+      - ${{ github.event.pull_request.user.login }}
+  - label: 'documentation'
+    assignees:
+      - ${{ github.event.pull_request.user.login }}
+  - label: 'dependencies'
+    assignees:
+      - ${{ github.event.pull_request.user.login }}
+
+ignoreFiles:
+  - '**/*.lock'
+  - '**/node_modules/**'
+  - '**/dist/**'
+  - '**/build/**'
+  - '**/.git/**'
