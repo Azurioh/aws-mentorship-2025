@@ -1,8 +1,8 @@
-import type { FastifyRequest } from 'fastify';
-import JWTService from 'src/services/jwt-service';
 import { Errors } from '@test-connect/shared/enums/errors';
 import { HttpStatusCode } from '@test-connect/shared/enums/http-status';
-import { UserTokenSchema, type UserToken } from '@test-connect/shared/schemas/user';
+import { type UserToken, UserTokenSchema } from '@test-connect/shared/schemas/user';
+import type { FastifyRequest } from 'fastify';
+import JWTService from 'src/services/jwt-service';
 import ApiError from './api-error';
 
 /**

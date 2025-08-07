@@ -28,7 +28,7 @@ const variables: { [key: string]: string | undefined } = {
   REGION: process.env.REGION,
   PROJECTS_TABLE: process.env.PROJECTS_TABLE,
   JWT_SECRET: process.env.JWT_SECRET,
-  COGNITO_ID: process.env.COGNITO_ID
+  COGNITO_ID: process.env.COGNITO_ID,
 };
 
 for (const [key, value] of Object.entries(variables)) {
