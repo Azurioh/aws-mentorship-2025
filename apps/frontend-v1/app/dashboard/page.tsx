@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
-import { Users, Star, Plus, Search, Filter, Code, TestTube, DollarSign, TrendingUp, Bell } from "lucide-react"
+import { Users, Star, Plus, Search, Filter, Code, TestTube, DollarSign, TrendingUp, Bell } from 'lucide-react'
 import Link from "next/link"
 
 // Mock user data - in real app, this would come from authentication
@@ -334,15 +334,20 @@ export default function Dashboard() {
 
         {activeTab === "messages" && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Messages</h2>
-            <Card>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className="flex items-start space-x-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
-                    >
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">Messages</h2>
+              <Button asChild variant="outline">
+                <Link href="/messages">
+                  View All Messages
+                </Link>
+              </Button>
+            </div>
+            
+            <div className="grid gap-4">
+              {messages.map((message) => (
+                <Card key={message.id} className="hover:shadow-md transition-shadow cursor-pointer">
+                  <CardContent className="p-4">
+                    <div className="flex items-start space-x-4">
                       <Avatar>
                         <AvatarFallback>
                           {message.sender
@@ -351,19 +356,31 @@ export default function Dashboard() {
                             .join("")}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-1">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-2">
                           <h4 className="font-medium text-gray-900">{message.sender}</h4>
-                          <span className="text-sm text-gray-500">{message.time}</span>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm text-gray-500">{message.time}</span>
+                            {message.unread && <div className="w-3 h-3 bg-blue-600 rounded-full"></div>}
+                          </div>
                         </div>
-                        <p className="text-gray-600">{message.preview}</p>
+                        <p className="text-gray-600 text-sm mb-2">{message.preview}</p>
+                        <div className="flex items-center justify-between">
+                          <Badge variant="outline" className="text-xs">
+                            Project Discussion
+                          </Badge>
+                          <Button size="sm" variant="ghost" asChild>
+                            <Link href={`/messages?conversation=${message.id}`}>
+                              Reply
+                            </Link>
+                          </Button>
+                        </div>
                       </div>
-                      {message.unread && <div className="w-3 h-3 bg-blue-600 rounded-full"></div>}
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         )}
       </div>
