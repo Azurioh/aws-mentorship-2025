@@ -31,15 +31,15 @@ custom:
   cloudfrontDomain: ${self:service}-${self:provider.stage}.cloudfront.net
   assetsBucket: ${self:service}-${self:provider.stage}-assets
 
-functions:
-  # Basic function for API routes
-  api:
-    handler: api/handler.main
-    events:
-      - http:
-          path: /api/{proxy+}
-          method: ANY
-          cors: true
+# functions:
+#   # Basic function for API routes
+#   api:
+#     handler: api/handler.main
+#     events:
+#       - http:
+#           path: /api/{proxy+}
+#           method: ANY
+#           cors: true
 
 resources:
   Resources:

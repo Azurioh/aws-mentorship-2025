@@ -95,7 +95,7 @@ export default function CreateProject() {
 
     const session = await Auth.fetchAuthSession();
 
-    const req = await fetch("http://localhost:3008/projects", { method: "POST", headers: {
+    const req = await fetch("https://w7it92figc.execute-api.eu-west-3.amazonaws.com/prod/projects", { method: "POST", headers: {
         "Authorization" : `Bearer ${session.tokens?.idToken?.toString()}`,
         "Content-Type": "application/json"
       },

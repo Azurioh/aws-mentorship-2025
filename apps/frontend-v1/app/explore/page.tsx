@@ -50,7 +50,7 @@ export default function ExploreProjectsPage() {
       }
       console.log(session)
 
-      const req = await fetch("http://localhost:3008/projects", { headers: {
+      const req = await fetch("https://w7it92figc.execute-api.eu-west-3.amazonaws.com/prod/projects", { headers: {
         "Authorization" : `Bearer ${session.tokens?.idToken?.toString()}`
       }})
 
