@@ -1,0 +1,7 @@
+{
+  "deploymentDate": "2025-08-28T12:07:59Z",
+  "cloudfrontDomain": "d4zy2qtwil06w.cloudfront.net",
+  "distributionId": "E2N6FE03534SFT",
+  "s3Bucket": "test-connect-frontend-prod-assets",
+  "region": "us-east-1"
+}
