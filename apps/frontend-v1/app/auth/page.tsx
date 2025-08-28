@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import "@/lib/amplify-config"
 
 import { useState, useEffect } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
@@ -14,6 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
 import { Users, Code, TestTube, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { signIn, signUp } from "@/lib/amplify"
 
 export default function AuthPage() {
   const searchParams = useSearchParams()
@@ -25,7 +27,8 @@ export default function AuthPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    fullName: "",
+    firstName: "",
+    lastName: "",
     company: "",
     experience: "",
     skills: [] as string[],
@@ -70,8 +73,22 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    console.log("1")
+
+    if (mode === 'register') {
+      await signUp(formData.email, formData.password, formData.firstName, formData.lastName, {
+        type: userType,
+        devSkills: formData.skills,
+        testSkills: formData.testingTypes
+      })
+    }
+
+    if (mode === 'login') {
+      await signIn(formData.email, formData.password)
+    }
     // Here you would integrate with your authentication system
-    console.log("Form submitted:", { mode, userType, formData })
+    // console.log("Form submitted:", { mode, userType, formData })
 
     // Simulate successful registration/login
     router.push("/dashboard")
@@ -210,7 +227,7 @@ export default function AuthPage() {
                 <div className="text-center">
                   <p className="text-sm text-gray-600">
                     Already have an account?{" "}
-                    <button onClick={() => setMode("login")} className="text-blue-600 hover:underline">
+                    <button onClick={() => router.push("/login")} className="text-blue-600 hover:underline">
                       Sign in
                     </button>
                   </p>
@@ -238,11 +255,20 @@ export default function AuthPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="fullName">Full Name</Label>
+                        <Label htmlFor="firstName">Firstname</Label>
                         <Input
-                          id="fullName"
-                          value={formData.fullName}
-                          onChange={(e) => handleInputChange("fullName", e.target.value)}
+                          id="firstName"
+                          value={formData.firstName}
+                          onChange={(e) => handleInputChange("firstName", e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="lastName">LastName</Label>
+                        <Input
+                          id="lastName"
+                          value={formData.lastName}
+                          onChange={(e) => handleInputChange("lastName", e.target.value)}
                           required
                         />
                       </div>

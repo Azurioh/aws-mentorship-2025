@@ -22,12 +22,18 @@ export const ProjectField = {
     description: 'The state of the project',
     example: ProjectState.WAITING_TESTER,
   }),
+  category:  z.string().openapi({
+    description: 'The category of the project',
+    example: 'Web application',
+  }),
+  skills: z.array(z.string()),
+  applicants: z.number(),
   ownerId: UserFields.id,
   volunteersIds: z.array(UserFields.id),
   testerUserId: UserFields.id.nullable(),
-  dueDate: z.date().openapi({
+  dueDate: z.string().openapi({
     description: 'The due date of the project',
-    example: new Date(),
+    example: new Date().toISOString(),
   }),
   createdAt: z.union([
     z.date().openapi({
@@ -62,19 +68,13 @@ export const ProjectFields = {
   dueDate: { dueDate: ProjectField.dueDate },
   createdAt: { createdAt: ProjectField.createdAt },
   updatedAt: { updatedAt: ProjectField.updatedAt },
+  skills: { skills: ProjectField.skills },
+  applicants: { applicants: ProjectField.applicants },
+  category: { category: ProjectField.category }
 };
 
 export const ProjectSchema = z.object({
-  ...ProjectFields.id,
-  ...ProjectFields.name,
-  ...ProjectFields.description,
-  ...ProjectFields.state,
-  ...ProjectFields.ownerId,
-  ...ProjectFields.volunteersIds,
-  ...ProjectFields.testerUserId,
-  ...ProjectFields.dueDate,
-  ...ProjectFields.createdAt,
-  ...ProjectFields.updatedAt,
+  ...ProjectField,
 });
 
 export type TProject = z.infer<typeof ProjectSchema>;

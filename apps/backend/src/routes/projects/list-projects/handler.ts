@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { THeaders, TParams, TQuerystring } from './schema';
-import { listProjects } from '@repositories/projects/list-projects';
+import { scanProjects } from '@repositories/projects/scan-projects';
 
 const handler = async (
   _req: FastifyRequest<{
@@ -10,7 +10,7 @@ const handler = async (
   }>,
   res: FastifyReply,
 ) => {
-  const projects = await listProjects('b9547ad8-3d5e-42d1-93a9-aa49503d4b4a');
+  const projects = await scanProjects()
 
   return res.success(projects);
 };

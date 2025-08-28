@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import "@/lib/amplify-config"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,6 +10,8 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Users, Eye, EyeOff, ArrowLeft } from 'lucide-react'
 import Link from "next/link"
+import { signIn } from "@/lib/amplify"
+
 
 export default function LoginPage() {
   const router = useRouter()
@@ -26,24 +29,18 @@ export default function LoginPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
+
+    console.log("1")
+
     e.preventDefault()
     setIsLoading(true)
     setError("")
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // Mock authentication - in real app, this would be actual authentication
       if (formData.email && formData.password) {
-        // Store user session (in real app, this would be handled by your auth system)
-        localStorage.setItem("user", JSON.stringify({
-          id: "1",
-          email: formData.email,
-          name: "John Doe",
-          type: formData.email.includes("tester") ? "tester" : "developer"
-        }))
-        
+        const out = await signIn(formData.email, formData.password)
+
+        console.log(out)
         router.push("/dashboard")
       } else {
         setError("Please fill in all fields")

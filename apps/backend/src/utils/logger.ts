@@ -22,7 +22,7 @@ class Logger extends Singleton<Logger> {
 
   private getLogFile() {
     if (!this.logFile) {
-      this.logFile = `logs/${environment.NODE_ENV}-${new Date().toISOString().slice(0, 10)}.log`;
+      this.logFile = `logs/${environment.STAGE}-${new Date().toISOString().slice(0, 10)}.log`;
     }
     return this.logFile;
   }
@@ -49,7 +49,7 @@ class Logger extends Singleton<Logger> {
    * Logger.getInstance().writeToFile('This is a log message');
    */
   private writeToFile(message: string): void {
-    if (environment && environment.NODE_ENV === 'development') {
+    if (environment && environment.STAGE === 'dev') {
 
       const messageWithoutColors = stripColor(message);
   

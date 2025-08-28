@@ -2,9 +2,18 @@ import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { environment } from '@config/environment';
 import type { FastifyInstance } from 'fastify';
+import {
+  validatorCompiler,
+  serializerCompiler,
+
+} from "fastify-type-provider-zod";
 
 export const setupSwagger = (app: FastifyInstance): void => {
-  const apibaseUrl: string = environment.API_BASE_URL;
+  const apibaseUrl: string = "http://localhost:3000"
+
+
+  // app.setValidatorCompiler(validatorCompiler);
+  // app.setSerializerCompiler(serializerCompiler);
 
   app.register(fastifySwagger, {
     openapi: {
@@ -18,8 +27,12 @@ export const setupSwagger = (app: FastifyInstance): void => {
   });
 
   app.register(fastifySwaggerUi, {
-    routePrefix: '/docs',
+    routePrefix: "/docs",
     staticCSP: true,
-    transformSpecification: (swaggerObject) => swaggerObject
-  });
+    transformSpecification: (swaggerObject) => swaggerObject,
+    uiConfig: {
+        docExpansion: "full",
+        deepLinking: false,
+    },
+});
 };

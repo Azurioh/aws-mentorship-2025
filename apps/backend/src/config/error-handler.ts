@@ -42,7 +42,7 @@ export const errorHandler = (error: unknown, _req: FastifyRequest, reply: Fastif
   } else {
     Logger.getInstance().error(error);
     if (error instanceof Error) {
-      if (environment.NODE_ENV === 'development') {
+      if (environment.STAGE === 'dev') {
         reply.status(HttpStatusCode.internalServerError).send({
           message: error.message,
           statusCode: Errors.INTERNAL_SERVER_ERROR,

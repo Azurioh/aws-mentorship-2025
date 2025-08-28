@@ -14,6 +14,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Upload, X } from "lucide-react"
 import Link from "next/link"
+import "@/lib/amplify-config"
+import * as Auth from 'aws-amplify/auth';
+
 
 export default function CreateProject() {
   const router = useRouter()
@@ -89,6 +92,25 @@ export default function CreateProject() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    const session = await Auth.fetchAuthSession();
+
+    const req = await fetch("http://localhost:3008/projects", { method: "POST", headers: {
+        "Authorization" : `Bearer ${session.tokens?.idToken?.toString()}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: formData.title,
+        description: formData.description,
+        dueDate : new Date(formData.deadline).toISOString(),
+        category: formData.category,
+        skills: formData.skills
+      })
+    })
+
+    
+
+    
     // Here you would submit the project data to your backend
     console.log("Project data:", formData)
 
@@ -165,7 +187,7 @@ export default function CreateProject() {
                   </Select>
                 </div>
 
-                <div>
+                {/* <div>
                   <Label htmlFor="budget">Budget (USD)</Label>
                   <Input
                     id="budget"
@@ -175,7 +197,7 @@ export default function CreateProject() {
                     placeholder="500"
                     required
                   />
-                </div>
+                </div> */}
               </div>
 
               <div>
@@ -248,7 +270,7 @@ export default function CreateProject() {
           </Card>
 
           {/* File Uploads */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Project Files</CardTitle>
               <CardDescription>Upload any relevant files, documentation, or assets</CardDescription>
@@ -284,10 +306,10 @@ export default function CreateProject() {
                 </div>
               )}
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Preview */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Project Preview</CardTitle>
               <CardDescription>This is how your project will appear to testers</CardDescription>
@@ -335,7 +357,7 @@ export default function CreateProject() {
                 )}
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Submit */}
           <div className="flex justify-end space-x-4">

@@ -1,10 +1,34 @@
+"use client"
+
+
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Users, MessageSquare, Star, Zap, Shield, Globe } from "lucide-react"
 import Link from "next/link"
 
+import "@/lib/amplify-config"
+import * as Auth from 'aws-amplify/auth';
+
+
 export default function LandingPage() {
+
+
+  const [isAuth, setIsAuth ] = useState(false)
+  
+
+  useEffect(() => {
+      const doFetch = async () => {
+        const session = await Auth.fetchAuthSession();
+        if (session.tokens?.idToken) {
+          setIsAuth(true)
+        }
+      }
+
+    doFetch()
+  }, [])
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
@@ -27,14 +51,28 @@ export default function LandingPage() {
               Pricing
             </Link>
           </nav>
-          <div className="flex space-x-2">
-            <Button variant="outline" asChild className="bg-white text-gray-700">
-              <Link href="/auth">Login</Link>
-            </Button>
-            <Button asChild className="bg-blue-600 hover:bg-blue-700">
-              <Link href="/auth?mode=register">Get Started</Link>
-            </Button>
-          </div>
+          {!isAuth &&
+            
+              <nav className="hidden md:flex items-center space-x-6">
+                <Link href="/explore" className="text-blue-600 font-medium">
+                  Explore Projects
+                </Link>
+                <Link href="/login" className="text-gray-600 hover:text-gray-900">
+                  Sign In
+                </Link>
+                <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                  <Link href="/auth?mode=register">Get Started</Link>
+                </Button>
+              </nav>
+            }
+
+            {isAuth &&
+              <nav className="hidden md:flex items-center space-x-6">
+                <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                  <Link href="/dashboard">Dashboard</Link>
+                </Button>
+              </nav>
+            }
         </div>
       </header>
 
