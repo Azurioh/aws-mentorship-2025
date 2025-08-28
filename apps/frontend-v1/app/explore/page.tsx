@@ -1,70 +1,67 @@
-"use client"
+'use client';
 
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Star, Clock, DollarSign, Users, MapPin, Filter, TrendingUp, Code, TestTube, Globe } from 'lucide-react'
-import Link from "next/link"
-import "@/lib/amplify-config"
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import {} from '@/components/ui/avatar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Search, Users, Code, TestTube, Globe } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import '@/lib/amplify-config';
 import * as Auth from 'aws-amplify/auth';
 
 export default function ExploreProjectsPage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [categoryFilter, setCategoryFilter] = useState("all")
-  const [budgetFilter, setBudgetFilter] = useState("all")
-  const [sortBy, setSortBy] = useState("newest")
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [budgetFilter, setBudgetFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('newest');
 
   // Mock projects data - expanded for public view
 
-  const [projects, setProjects] = useState<Array<{
-    id: string;
-    name: string;
-    description: string;
-    updatedAt: string;
-    dueDate: string;
-    createdAt: string;
-    ownerId: string;
-    state: number;
-    category: string;
-    skills: string[];
-    applicants: number;
-  }>>([])
+  const [projects, setProjects] = useState<
+    Array<{
+      id: string;
+      name: string;
+      description: string;
+      updatedAt: string;
+      dueDate: string;
+      createdAt: string;
+      ownerId: string;
+      state: number;
+      category: string;
+      skills: string[];
+      applicants: number;
+    }>
+  >([]);
 
-  const [isAuth, setIsAuth ] = useState(false)
-
+  const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
     const doFetch = async () => {
-
-
       const session = await Auth.fetchAuthSession();
 
-
-
       if (session.tokens?.idToken) {
-        setIsAuth(true)
+        setIsAuth(true);
       }
-      console.log(session)
+      console.log(session);
 
-      const req = await fetch("https://w7it92figc.execute-api.eu-west-3.amazonaws.com/prod/projects", { headers: {
-        "Authorization" : `Bearer ${session.tokens?.idToken?.toString()}`
-      }})
+      const req = await fetch('https://w7it92figc.execute-api.eu-west-3.amazonaws.com/prod/projects', {
+        headers: {
+          Authorization: `Bearer ${session.tokens?.idToken?.toString()}`,
+        },
+      });
 
       if (!req.ok) return;
 
-      const data = await req.json()
+      const data = await req.json();
 
+      setProjects(data.data);
+    };
 
-      setProjects(data.data)
-
-    }
-
-    doFetch()
-  }, [])
+    doFetch();
+  }, []);
 
   // const projects = [
   //   {
@@ -202,67 +199,67 @@ export default function ExploreProjectsPage() {
   // ]
 
   const filteredProjects = projects.filter((project) => {
-    const matchesSearch = 
+    const matchesSearch =
       project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase()) 
-      // project.client.name.toLowerCase().includes(searchQuery.toLowerCase())
-    
-    const matchesCategory = categoryFilter === "all" || project.category === categoryFilter
-    
-    // const matchesBudget = 
+      project.description.toLowerCase().includes(searchQuery.toLowerCase());
+    // project.client.name.toLowerCase().includes(searchQuery.toLowerCase())
+
+    const matchesCategory = categoryFilter === 'all' || project.category === categoryFilter;
+
+    // const matchesBudget =
     //   budgetFilter === "all" ||
     //   (budgetFilter === "low" && project.budget < 500) ||
     //   (budgetFilter === "medium" && project.budget >= 500 && project.budget < 1000) ||
     //   (budgetFilter === "high" && project.budget >= 1000)
 
-    return matchesSearch && matchesCategory
-  })
+    return matchesSearch && matchesCategory;
+  });
 
   // Sort projects
   const sortedProjects = [...filteredProjects].sort((a, b) => {
     switch (sortBy) {
-      case "newest":
-        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      case 'newest':
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
       // case "budget-high":
       //   return b.budget - a.budget
       // case "budget-low":
       //   return a.budget - b.budget
-      case "deadline":
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+      case 'deadline':
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
       default:
-        return 0
+        return 0;
     }
-    return 0
-  })
+    return 0;
+  });
 
   const formatBudget = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
-    }).format(amount)
-  }
+    }).format(amount);
+  };
 
   const getDaysUntilDeadline = (deadline: string) => {
-    const today = new Date()
-    const deadlineDate = new Date(deadline)
-    const diffTime = deadlineDate.getTime() - today.getTime()
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    return diffDays
-  }
+    const today = new Date();
+    const deadlineDate = new Date(deadline);
+    const diffTime = deadlineDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case "web-app":
-        return <Globe className="w-4 h-4" />
-      case "mobile-app":
-        return <TestTube className="w-4 h-4" />
-      case "api":
-        return <Code className="w-4 h-4" />
+      case 'web-app':
+        return <Globe className="w-4 h-4" />;
+      case 'mobile-app':
+        return <TestTube className="w-4 h-4" />;
+      case 'api':
+        return <Code className="w-4 h-4" />;
       default:
-        return <Code className="w-4 h-4" />
+        return <Code className="w-4 h-4" />;
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -270,33 +267,31 @@ export default function ExploreProjectsPage() {
       <header className="bg-white border-b sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <Users className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-gray-900">TestConnect</span>
             </Link>
-            
-            
-            {!isAuth &&
-            
+
+            {!isAuth && (
               <nav className="hidden md:flex items-center space-x-6">
-                <Link href="/login" className="text-gray-600 hover:text-gray-900">
+                <Link to="/login" className="text-gray-600 hover:text-gray-900">
                   Sign In
                 </Link>
                 <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                  <Link href="/auth?mode=register">Get Started</Link>
+                  <Link to="/auth?mode=register">Get Started</Link>
                 </Button>
               </nav>
-            }
+            )}
 
-            {isAuth &&
+            {isAuth && (
               <nav className="hidden md:flex items-center space-x-6">
                 <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                  <Link href="/dashboard">Dashboard</Link>
+                  <Link to="/dashboard">Dashboard</Link>
                 </Button>
               </nav>
-            }
+            )}
           </div>
         </div>
       </header>
@@ -304,11 +299,10 @@ export default function ExploreProjectsPage() {
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Discover Testing Opportunities
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Discover Testing Opportunities</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Browse projects from developers worldwide and find the perfect testing opportunities that match your skills and interests.
+            Browse projects from developers worldwide and find the perfect testing opportunities that match your skills
+            and interests.
           </p>
         </div>
 
@@ -413,7 +407,7 @@ export default function ExploreProjectsPage() {
         {/* Results */}
         <div className="mb-6 flex items-center justify-between">
           <p className="text-gray-600">
-            {sortedProjects.length} project{sortedProjects.length !== 1 ? "s" : ""} found
+            {sortedProjects.length} project{sortedProjects.length !== 1 ? 's' : ''} found
           </p>
           {/* <div className="flex items-center space-x-2">
             <Filter className="w-4 h-4 text-gray-400" />
@@ -426,9 +420,11 @@ export default function ExploreProjectsPage() {
         {/* Projects Grid */}
         <div className="space-y-6">
           {sortedProjects.map((project) => (
-            <Card key={project.id} className={`hover:shadow-lg transition-shadow ${
-              /*project.featured ? "ring-2 ring-blue-200 bg-blue-50/30" :*/ ""
-            }`}>
+            <Card
+              key={project.id}
+              className={`hover:shadow-lg transition-shadow ${
+                /*project.featured ? "ring-2 ring-blue-200 bg-blue-50/30" :*/ ''
+              }`}>
               <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
@@ -443,12 +439,12 @@ export default function ExploreProjectsPage() {
                             <Badge className="bg-red-600 text-white">Urgent</Badge>
                           )} */}
                         </div>
-                        
+
                         <div className="flex items-center space-x-4 mb-3">
                           <div className="flex items-center space-x-1">
                             {getCategoryIcon(project.category)}
                             <Badge variant="secondary" className="capitalize">
-                              {project.category.replace("-", " ")}
+                              {project.category.replace('-', ' ')}
                             </Badge>
                           </div>
                           {/* <div className="flex items-center text-green-600">
@@ -539,7 +535,7 @@ export default function ExploreProjectsPage() {
 
                         <div className="space-y-2">
                           <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild>
-                            <Link href="/login">Apply Now</Link>
+                            <Link to="/login">Apply Now</Link>
                           </Button>
                           <Button variant="outline" className="w-full">
                             View Details
@@ -570,29 +566,32 @@ export default function ExploreProjectsPage() {
 
         {/* Call to Action */}
 
-      {!isAuth &&
-        <div className="mt-12 text-center">
-          <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-            <CardContent className="p-8">
-              <h2 className="text-2xl font-bold mb-4">Ready to Start Testing?</h2>
-              <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-                Join thousands of testers who are already earning money by helping developers improve their applications.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100" asChild>
-                  <Link href="/auth?mode=register&type=tester">Sign Up as Tester</Link>
-                </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white text-blue-600" asChild>
-                  <Link href="/auth?mode=register&type=developer">Post a Project</Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        }
+        {!isAuth && (
+          <div className="mt-12 text-center">
+            <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+              <CardContent className="p-8">
+                <h2 className="text-2xl font-bold mb-4">Ready to Start Testing?</h2>
+                <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+                  Join thousands of testers who are already earning money by helping developers improve their
+                  applications.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100" asChild>
+                    <Link to="/auth?mode=register&type=tester">Sign Up as Tester</Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white text-white hover:bg-white text-blue-600"
+                    asChild>
+                    <Link to="/auth?mode=register&type=developer">Post a Project</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
-
     </div>
-  )
+  );
 }

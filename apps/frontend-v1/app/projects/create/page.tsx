@@ -1,66 +1,64 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Upload, X } from "lucide-react"
-import Link from "next/link"
-import "@/lib/amplify-config"
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import '@/lib/amplify-config';
 import * as Auth from 'aws-amplify/auth';
 
-
 export default function CreateProject() {
-  const router = useRouter()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    category: "",
-    budget: "",
-    deadline: "",
-    requirements: "",
+    title: '',
+    description: '',
+    category: '',
+    budget: '',
+    deadline: '',
+    requirements: '',
     testingTypes: [] as string[],
     skills: [] as string[],
     files: [] as File[],
-  })
+  });
 
   const testingTypes = [
-    "Manual Testing",
-    "Automated Testing",
-    "Performance Testing",
-    "Security Testing",
-    "Usability Testing",
-    "Mobile Testing",
-    "API Testing",
-    "Cross-browser Testing",
-  ]
+    'Manual Testing',
+    'Automated Testing',
+    'Performance Testing',
+    'Security Testing',
+    'Usability Testing',
+    'Mobile Testing',
+    'API Testing',
+    'Cross-browser Testing',
+  ];
 
   const requiredSkills = [
-    "React",
-    "Next.js",
-    "Vue.js",
-    "Angular",
-    "Node.js",
-    "Python",
-    "Java",
-    "C#",
-    "Mobile Development",
-    "Web Development",
-    "API Development",
-    "Database Testing",
-  ]
+    'React',
+    'Next.js',
+    'Vue.js',
+    'Angular',
+    'Node.js',
+    'Python',
+    'Java',
+    'C#',
+    'Mobile Development',
+    'Web Development',
+    'API Development',
+    'Database Testing',
+  ];
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleTestingTypeToggle = (type: string) => {
     setFormData((prev) => ({
@@ -68,55 +66,54 @@ export default function CreateProject() {
       testingTypes: prev.testingTypes.includes(type)
         ? prev.testingTypes.filter((t) => t !== type)
         : [...prev.testingTypes, type],
-    }))
-  }
+    }));
+  };
 
   const handleSkillToggle = (skill: string) => {
     setFormData((prev) => ({
       ...prev,
       skills: prev.skills.includes(skill) ? prev.skills.filter((s) => s !== skill) : [...prev.skills, skill],
-    }))
-  }
+    }));
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
-    setFormData((prev) => ({ ...prev, files: [...prev.files, ...files] }))
-  }
+    const files = Array.from(e.target.files || []);
+    setFormData((prev) => ({ ...prev, files: [...prev.files, ...files] }));
+  };
 
   const removeFile = (index: number) => {
     setFormData((prev) => ({
       ...prev,
       files: prev.files.filter((_, i) => i !== index),
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     const session = await Auth.fetchAuthSession();
 
-    const req = await fetch("https://w7it92figc.execute-api.eu-west-3.amazonaws.com/prod/projects", { method: "POST", headers: {
-        "Authorization" : `Bearer ${session.tokens?.idToken?.toString()}`,
-        "Content-Type": "application/json"
+    const req = await fetch('https://w7it92figc.execute-api.eu-west-3.amazonaws.com/prod/projects', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${session.tokens?.idToken?.toString()}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name: formData.title,
         description: formData.description,
-        dueDate : new Date(formData.deadline).toISOString(),
+        dueDate: new Date(formData.deadline).toISOString(),
         category: formData.category,
-        skills: formData.skills
-      })
-    })
+        skills: formData.skills,
+      }),
+    });
 
-    
-
-    
     // Here you would submit the project data to your backend
-    console.log("Project data:", formData)
+    console.log('Project data:', formData);
 
     // Simulate successful creation
-    router.push("/dashboard?tab=projects")
-  }
+    navigate('/dashboard?tab=projects');
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -124,7 +121,7 @@ export default function CreateProject() {
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link href="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900">
+            <Link to="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
             </Link>
@@ -151,7 +148,7 @@ export default function CreateProject() {
                 <Input
                   id="title"
                   value={formData.title}
-                  onChange={(e) => handleInputChange("title", e.target.value)}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
                   placeholder="e.g., E-commerce Mobile App Testing"
                   required
                 />
@@ -162,7 +159,7 @@ export default function CreateProject() {
                 <Textarea
                   id="description"
                   value={formData.description}
-                  onChange={(e) => handleInputChange("description", e.target.value)}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
                   placeholder="Describe your project, what it does, and what specific testing you need..."
                   rows={4}
                   required
@@ -172,7 +169,7 @@ export default function CreateProject() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <Label htmlFor="category">Project Category</Label>
-                  <Select onValueChange={(value) => handleInputChange("category", value)}>
+                  <Select onValueChange={(value) => handleInputChange('category', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
@@ -206,7 +203,7 @@ export default function CreateProject() {
                   id="deadline"
                   type="date"
                   value={formData.deadline}
-                  onChange={(e) => handleInputChange("deadline", e.target.value)}
+                  onChange={(e) => handleInputChange('deadline', e.target.value)}
                   required
                 />
               </div>
@@ -261,7 +258,7 @@ export default function CreateProject() {
                 <Textarea
                   id="requirements"
                   value={formData.requirements}
-                  onChange={(e) => handleInputChange("requirements", e.target.value)}
+                  onChange={(e) => handleInputChange('requirements', e.target.value)}
                   placeholder="Any specific requirements, test cases, or areas of focus..."
                   rows={3}
                 />
@@ -361,7 +358,7 @@ export default function CreateProject() {
 
           {/* Submit */}
           <div className="flex justify-end space-x-4">
-            <Button type="button" variant="outline" onClick={() => router.back()}>
+            <Button type="button" variant="outline" onClick={() => navigate(-1)}>
               Cancel
             </Button>
             <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
@@ -371,5 +368,5 @@ export default function CreateProject() {
         </form>
       </div>
     </div>
-  )
+  );
 }

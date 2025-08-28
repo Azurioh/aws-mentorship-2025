@@ -1,132 +1,132 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Send, Search, ArrowLeft, MoreVertical, Paperclip, Phone, Video } from "lucide-react"
-import Link from "next/link"
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Send, Search, ArrowLeft, MoreVertical, Paperclip, Phone, Video } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function MessagesPage() {
-  const [selectedConversation, setSelectedConversation] = useState<string | null>("1")
-  const [newMessage, setNewMessage] = useState("")
-  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedConversation, setSelectedConversation] = useState<string | null>('1');
+  const [newMessage, setNewMessage] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const conversations = [
     {
-      id: "1",
+      id: '1',
       participant: {
-        name: "Alice Johnson",
-        avatar: "/placeholder.svg?height=40&width=40",
-        status: "online",
-        role: "Tester",
+        name: 'Alice Johnson',
+        avatar: '/placeholder.svg?height=40&width=40',
+        status: 'online',
+        role: 'Tester',
       },
       lastMessage: {
-        text: "I found a critical bug in the checkout process. The payment gateway is not responding properly when using Safari.",
-        timestamp: "2 hours ago",
-        sender: "Alice Johnson",
+        text: 'I found a critical bug in the checkout process. The payment gateway is not responding properly when using Safari.',
+        timestamp: '2 hours ago',
+        sender: 'Alice Johnson',
       },
       unreadCount: 2,
-      project: "E-commerce Mobile App Testing",
+      project: 'E-commerce Mobile App Testing',
     },
     {
-      id: "2",
+      id: '2',
       participant: {
-        name: "Bob Smith",
-        avatar: "/placeholder.svg?height=40&width=40",
-        status: "offline",
-        role: "Developer",
+        name: 'Bob Smith',
+        avatar: '/placeholder.svg?height=40&width=40',
+        status: 'offline',
+        role: 'Developer',
       },
       lastMessage: {
         text: "Thanks for the detailed report! I've fixed the issues you mentioned. Could you test the new build?",
-        timestamp: "1 day ago",
-        sender: "You",
+        timestamp: '1 day ago',
+        sender: 'You',
       },
       unreadCount: 0,
-      project: "Web Dashboard Performance Testing",
+      project: 'Web Dashboard Performance Testing',
     },
     {
-      id: "3",
+      id: '3',
       participant: {
-        name: "Carol Davis",
-        avatar: "/placeholder.svg?height=40&width=40",
-        status: "online",
-        role: "Tester",
+        name: 'Carol Davis',
+        avatar: '/placeholder.svg?height=40&width=40',
+        status: 'online',
+        role: 'Tester',
       },
       lastMessage: {
         text: "The API security testing is complete. I'll send you the full report by tomorrow.",
-        timestamp: "2 days ago",
-        sender: "Carol Davis",
+        timestamp: '2 days ago',
+        sender: 'Carol Davis',
       },
       unreadCount: 1,
-      project: "API Security Testing",
+      project: 'API Security Testing',
     },
-  ]
+  ];
 
   const messages = [
     {
-      id: "1",
-      sender: "Alice Johnson",
+      id: '1',
+      sender: 'Alice Johnson',
       text: "Hi! I've started testing your e-commerce app. The overall user experience is great!",
-      timestamp: "10:30 AM",
+      timestamp: '10:30 AM',
       isOwn: false,
     },
     {
-      id: "2",
-      sender: "You",
+      id: '2',
+      sender: 'You',
       text: "That's great to hear! Have you had a chance to test the payment flow yet?",
-      timestamp: "10:35 AM",
+      timestamp: '10:35 AM',
       isOwn: true,
     },
     {
-      id: "3",
-      sender: "Alice Johnson",
-      text: "Yes, I found a few issues there. The payment gateway seems to timeout on Safari, and the error handling could be improved.",
-      timestamp: "10:40 AM",
+      id: '3',
+      sender: 'Alice Johnson',
+      text: 'Yes, I found a few issues there. The payment gateway seems to timeout on Safari, and the error handling could be improved.',
+      timestamp: '10:40 AM',
       isOwn: false,
     },
     {
-      id: "4",
-      sender: "Alice Johnson",
+      id: '4',
+      sender: 'Alice Johnson',
       text: "I've documented everything with screenshots. Should I send them here or upload to the project dashboard?",
-      timestamp: "10:42 AM",
+      timestamp: '10:42 AM',
       isOwn: false,
     },
     {
-      id: "5",
-      sender: "You",
-      text: "Please upload them to the project dashboard. That way we can track them properly. Thanks for the detailed testing!",
-      timestamp: "11:15 AM",
+      id: '5',
+      sender: 'You',
+      text: 'Please upload them to the project dashboard. That way we can track them properly. Thanks for the detailed testing!',
+      timestamp: '11:15 AM',
       isOwn: true,
     },
     {
-      id: "6",
-      sender: "Alice Johnson",
-      text: "I found a critical bug in the checkout process. The payment gateway is not responding properly when using Safari.",
-      timestamp: "2:30 PM",
+      id: '6',
+      sender: 'Alice Johnson',
+      text: 'I found a critical bug in the checkout process. The payment gateway is not responding properly when using Safari.',
+      timestamp: '2:30 PM',
       isOwn: false,
     },
-  ]
+  ];
 
   const filteredConversations = conversations.filter(
     (conv) =>
       conv.participant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       conv.project.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  );
 
-  const selectedConv = conversations.find((conv) => conv.id === selectedConversation)
+  const selectedConv = conversations.find((conv) => conv.id === selectedConversation);
 
   const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (newMessage.trim()) {
       // Here you would send the message to your backend
-      console.log("Sending message:", newMessage)
-      setNewMessage("")
+      console.log('Sending message:', newMessage);
+      setNewMessage('');
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -134,7 +134,7 @@ export default function MessagesPage() {
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link href="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900">
+            <Link to="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
             </Link>
@@ -164,26 +164,25 @@ export default function MessagesPage() {
                 key={conversation.id}
                 onClick={() => setSelectedConversation(conversation.id)}
                 className={`p-4 border-b cursor-pointer hover:bg-gray-50 ${
-                  selectedConversation === conversation.id ? "bg-blue-50 border-r-2 border-r-blue-500" : ""
-                }`}
-              >
+                  selectedConversation === conversation.id ? 'bg-blue-50 border-r-2 border-r-blue-500' : ''
+                }`}>
                 <div className="flex items-start space-x-3">
                   <div className="relative">
                     <Avatar>
                       <AvatarImage
-                        src={conversation.participant.avatar || "/placeholder.svg"}
+                        src={conversation.participant.avatar || '/placeholder.svg'}
                         alt={conversation.participant.name}
                       />
                       <AvatarFallback>
                         {conversation.participant.name
-                          .split(" ")
+                          .split(' ')
                           .map((n) => n[0])
-                          .join("")}
+                          .join('')}
                       </AvatarFallback>
                     </Avatar>
                     <div
                       className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white ${
-                        conversation.participant.status === "online" ? "bg-green-400" : "bg-gray-400"
+                        conversation.participant.status === 'online' ? 'bg-green-400' : 'bg-gray-400'
                       }`}
                     />
                   </div>
@@ -206,7 +205,7 @@ export default function MessagesPage() {
                     <p className="text-sm text-gray-600 truncate mb-1">{conversation.project}</p>
 
                     <p className="text-sm text-gray-500 truncate">
-                      {conversation.lastMessage.sender === "You" ? "You: " : ""}
+                      {conversation.lastMessage.sender === 'You' ? 'You: ' : ''}
                       {conversation.lastMessage.text}
                     </p>
                   </div>
@@ -226,14 +225,14 @@ export default function MessagesPage() {
                   <div className="flex items-center space-x-3">
                     <Avatar>
                       <AvatarImage
-                        src={selectedConv.participant.avatar || "/placeholder.svg"}
+                        src={selectedConv.participant.avatar || '/placeholder.svg'}
                         alt={selectedConv.participant.name}
                       />
                       <AvatarFallback>
                         {selectedConv.participant.name
-                          .split(" ")
+                          .split(' ')
                           .map((n) => n[0])
-                          .join("")}
+                          .join('')}
                       </AvatarFallback>
                     </Avatar>
                     <div>
@@ -244,9 +243,8 @@ export default function MessagesPage() {
                         </Badge>
                         <span
                           className={`text-xs ${
-                            selectedConv.participant.status === "online" ? "text-green-600" : "text-gray-500"
-                          }`}
-                        >
+                            selectedConv.participant.status === 'online' ? 'text-green-600' : 'text-gray-500'
+                          }`}>
                           {selectedConv.participant.status}
                         </span>
                       </div>
@@ -274,14 +272,13 @@ export default function MessagesPage() {
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map((message) => (
-                  <div key={message.id} className={`flex ${message.isOwn ? "justify-end" : "justify-start"}`}>
+                  <div key={message.id} className={`flex ${message.isOwn ? 'justify-end' : 'justify-start'}`}>
                     <div
                       className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        message.isOwn ? "bg-blue-600 text-white" : "bg-white border text-gray-900"
-                      }`}
-                    >
+                        message.isOwn ? 'bg-blue-600 text-white' : 'bg-white border text-gray-900'
+                      }`}>
                       <p className="text-sm">{message.text}</p>
-                      <p className={`text-xs mt-1 ${message.isOwn ? "text-blue-100" : "text-gray-500"}`}>
+                      <p className={`text-xs mt-1 ${message.isOwn ? 'text-blue-100' : 'text-gray-500'}`}>
                         {message.timestamp}
                       </p>
                     </div>
@@ -321,5 +318,5 @@ export default function MessagesPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

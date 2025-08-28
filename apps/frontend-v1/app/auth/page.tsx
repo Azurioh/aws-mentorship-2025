@@ -1,66 +1,66 @@
-"use client"
+'use client';
 
-import type React from "react"
-import "@/lib/amplify-config"
+import type React from 'react';
+import '@/lib/amplify-config';
 
-import { useState, useEffect } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Badge } from "@/components/ui/badge"
-import { Users, Code, TestTube, ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { signIn, signUp } from "@/lib/amplify"
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
+import { Users, Code, TestTube, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { signIn, signUp } from '@/lib/amplify';
 
 export default function AuthPage() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const [mode, setMode] = useState<"login" | "register">("login")
-  const [userType, setUserType] = useState<"developer" | "tester" | null>(null)
-  const [step, setStep] = useState(1)
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [mode, setMode] = useState<'login' | 'register'>('login');
+  const [userType, setUserType] = useState<'developer' | 'tester' | null>(null);
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    firstName: "",
-    lastName: "",
-    company: "",
-    experience: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
+    company: '',
+    experience: '',
     skills: [] as string[],
-    bio: "",
-    portfolio: "",
-    hourlyRate: "",
-    availability: "",
+    bio: '',
+    portfolio: '',
+    hourlyRate: '',
+    availability: '',
     testingTypes: [] as string[],
-  })
+  });
 
   useEffect(() => {
-    const modeParam = searchParams.get("mode")
-    const typeParam = searchParams.get("type")
+    const modeParam = searchParams.get('mode');
+    const typeParam = searchParams.get('type');
 
-    if (modeParam === "register") {
-      setMode("register")
+    if (modeParam === 'register') {
+      setMode('register');
     }
-    if (typeParam === "developer" || typeParam === "tester") {
-      setUserType(typeParam)
+    if (typeParam === 'developer' || typeParam === 'tester') {
+      setUserType(typeParam);
     }
-  }, [searchParams])
+  }, [searchParams]);
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSkillToggle = (skill: string) => {
     setFormData((prev) => ({
       ...prev,
       skills: prev.skills.includes(skill) ? prev.skills.filter((s) => s !== skill) : [...prev.skills, skill],
-    }))
-  }
+    }));
+  };
 
   const handleTestingTypeToggle = (type: string) => {
     setFormData((prev) => ({
@@ -68,59 +68,59 @@ export default function AuthPage() {
       testingTypes: prev.testingTypes.includes(type)
         ? prev.testingTypes.filter((t) => t !== type)
         : [...prev.testingTypes, type],
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    console.log("1")
+    console.log('1');
 
     if (mode === 'register') {
       await signUp(formData.email, formData.password, formData.firstName, formData.lastName, {
         type: userType,
         devSkills: formData.skills,
-        testSkills: formData.testingTypes
-      })
+        testSkills: formData.testingTypes,
+      });
     }
 
     if (mode === 'login') {
-      await signIn(formData.email, formData.password)
+      await signIn(formData.email, formData.password);
     }
     // Here you would integrate with your authentication system
     // console.log("Form submitted:", { mode, userType, formData })
 
     // Simulate successful registration/login
-    router.push("/dashboard")
-  }
+    navigate('/dashboard');
+  };
 
   const developerSkills = [
-    "React",
-    "Next.js",
-    "Vue.js",
-    "Angular",
-    "Node.js",
-    "Python",
-    "Java",
-    "C#",
-    "Mobile Development",
-    "Web Development",
-    "API Development",
-    "Database Design",
-  ]
+    'React',
+    'Next.js',
+    'Vue.js',
+    'Angular',
+    'Node.js',
+    'Python',
+    'Java',
+    'C#',
+    'Mobile Development',
+    'Web Development',
+    'API Development',
+    'Database Design',
+  ];
 
   const testingTypes = [
-    "Manual Testing",
-    "Automated Testing",
-    "Performance Testing",
-    "Security Testing",
-    "Usability Testing",
-    "Mobile Testing",
-    "API Testing",
-    "Cross-browser Testing",
-  ]
+    'Manual Testing',
+    'Automated Testing',
+    'Performance Testing',
+    'Security Testing',
+    'Usability Testing',
+    'Mobile Testing',
+    'API Testing',
+    'Cross-browser Testing',
+  ];
 
-  if (mode === "login") {
+  if (mode === 'login') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
@@ -142,7 +142,7 @@ export default function AuthPage() {
                   id="email"
                   type="email"
                   value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
                   required
                 />
               </div>
@@ -152,7 +152,7 @@ export default function AuthPage() {
                   id="password"
                   type="password"
                   value={formData.password}
-                  onChange={(e) => handleInputChange("password", e.target.value)}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
                   required
                 />
               </div>
@@ -162,8 +162,8 @@ export default function AuthPage() {
             </form>
             <div className="mt-4 text-center">
               <p className="text-sm text-gray-600">
-                Don't have an account?{" "}
-                <button onClick={() => setMode("register")} className="text-blue-600 hover:underline">
+                Don't have an account?{' '}
+                <button onClick={() => setMode('register')} className="text-blue-600 hover:underline">
                   Sign up
                 </button>
               </p>
@@ -171,14 +171,14 @@ export default function AuthPage() {
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
       <div className="container mx-auto max-w-2xl">
         <div className="mb-6">
-          <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900">
+          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-gray-900">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
@@ -194,9 +194,9 @@ export default function AuthPage() {
             </div>
             <CardTitle>Create Your Account</CardTitle>
             <CardDescription>
-              {!userType && "Choose your role to get started"}
-              {userType === "developer" && "Set up your developer profile"}
-              {userType === "tester" && "Set up your tester profile"}
+              {!userType && 'Choose your role to get started'}
+              {userType === 'developer' && 'Set up your developer profile'}
+              {userType === 'tester' && 'Set up your tester profile'}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -205,8 +205,7 @@ export default function AuthPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Card
                     className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-blue-500"
-                    onClick={() => setUserType("developer")}
-                  >
+                    onClick={() => setUserType('developer')}>
                     <CardContent className="p-6 text-center">
                       <Code className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                       <h3 className="font-semibold text-lg mb-2">I'm a Developer</h3>
@@ -215,8 +214,7 @@ export default function AuthPage() {
                   </Card>
                   <Card
                     className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-purple-500"
-                    onClick={() => setUserType("tester")}
-                  >
+                    onClick={() => setUserType('tester')}>
                     <CardContent className="p-6 text-center">
                       <TestTube className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                       <h3 className="font-semibold text-lg mb-2">I'm a Tester</h3>
@@ -226,8 +224,8 @@ export default function AuthPage() {
                 </div>
                 <div className="text-center">
                   <p className="text-sm text-gray-600">
-                    Already have an account?{" "}
-                    <button onClick={() => router.push("/login")} className="text-blue-600 hover:underline">
+                    Already have an account?{' '}
+                    <button onClick={() => navigate('/login')} className="text-blue-600 hover:underline">
                       Sign in
                     </button>
                   </p>
@@ -239,7 +237,7 @@ export default function AuthPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-center mb-4">
                       <Badge variant="secondary">
-                        {userType === "developer" ? (
+                        {userType === 'developer' ? (
                           <>
                             <Code className="w-4 h-4 mr-2" />
                             Developer Registration
@@ -259,7 +257,7 @@ export default function AuthPage() {
                         <Input
                           id="firstName"
                           value={formData.firstName}
-                          onChange={(e) => handleInputChange("firstName", e.target.value)}
+                          onChange={(e) => handleInputChange('firstName', e.target.value)}
                           required
                         />
                       </div>
@@ -268,7 +266,7 @@ export default function AuthPage() {
                         <Input
                           id="lastName"
                           value={formData.lastName}
-                          onChange={(e) => handleInputChange("lastName", e.target.value)}
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
                           required
                         />
                       </div>
@@ -278,7 +276,7 @@ export default function AuthPage() {
                           id="email"
                           type="email"
                           value={formData.email}
-                          onChange={(e) => handleInputChange("email", e.target.value)}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
                           required
                         />
                       </div>
@@ -291,7 +289,7 @@ export default function AuthPage() {
                           id="password"
                           type="password"
                           value={formData.password}
-                          onChange={(e) => handleInputChange("password", e.target.value)}
+                          onChange={(e) => handleInputChange('password', e.target.value)}
                           required
                         />
                       </div>
@@ -301,19 +299,19 @@ export default function AuthPage() {
                           id="confirmPassword"
                           type="password"
                           value={formData.confirmPassword}
-                          onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                          onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                           required
                         />
                       </div>
                     </div>
 
-                    {userType === "developer" && (
+                    {userType === 'developer' && (
                       <div>
                         <Label htmlFor="company">Company (Optional)</Label>
                         <Input
                           id="company"
                           value={formData.company}
-                          onChange={(e) => handleInputChange("company", e.target.value)}
+                          onChange={(e) => handleInputChange('company', e.target.value)}
                           placeholder="Your company name"
                         />
                       </div>
@@ -321,7 +319,7 @@ export default function AuthPage() {
 
                     <div>
                       <Label htmlFor="experience">Experience Level</Label>
-                      <Select onValueChange={(value) => handleInputChange("experience", value)}>
+                      <Select onValueChange={(value) => handleInputChange('experience', value)}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select your experience level" />
                         </SelectTrigger>
@@ -343,19 +341,19 @@ export default function AuthPage() {
                 {step === 2 && (
                   <div className="space-y-4">
                     <div>
-                      <Label>{userType === "developer" ? "Technical Skills" : "Testing Specializations"}</Label>
+                      <Label>{userType === 'developer' ? 'Technical Skills' : 'Testing Specializations'}</Label>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
-                        {(userType === "developer" ? developerSkills : testingTypes).map((skill) => (
+                        {(userType === 'developer' ? developerSkills : testingTypes).map((skill) => (
                           <div key={skill} className="flex items-center space-x-2">
                             <Checkbox
                               id={skill}
                               checked={
-                                userType === "developer"
+                                userType === 'developer'
                                   ? formData.skills.includes(skill)
                                   : formData.testingTypes.includes(skill)
                               }
                               onCheckedChange={() =>
-                                userType === "developer" ? handleSkillToggle(skill) : handleTestingTypeToggle(skill)
+                                userType === 'developer' ? handleSkillToggle(skill) : handleTestingTypeToggle(skill)
                               }
                             />
                             <Label htmlFor={skill} className="text-sm">
@@ -371,11 +369,11 @@ export default function AuthPage() {
                       <Textarea
                         id="bio"
                         value={formData.bio}
-                        onChange={(e) => handleInputChange("bio", e.target.value)}
+                        onChange={(e) => handleInputChange('bio', e.target.value)}
                         placeholder={
-                          userType === "developer"
-                            ? "Tell us about your development experience and the types of projects you work on..."
-                            : "Tell us about your testing experience and what makes you a great tester..."
+                          userType === 'developer'
+                            ? 'Tell us about your development experience and the types of projects you work on...'
+                            : 'Tell us about your testing experience and what makes you a great tester...'
                         }
                         rows={4}
                       />
@@ -383,21 +381,21 @@ export default function AuthPage() {
 
                     <div>
                       <Label htmlFor="portfolio">
-                        {userType === "developer" ? "Portfolio/GitHub URL" : "Portfolio/LinkedIn URL"}
+                        {userType === 'developer' ? 'Portfolio/GitHub URL' : 'Portfolio/LinkedIn URL'}
                       </Label>
                       <Input
                         id="portfolio"
                         value={formData.portfolio}
-                        onChange={(e) => handleInputChange("portfolio", e.target.value)}
+                        onChange={(e) => handleInputChange('portfolio', e.target.value)}
                         placeholder={
-                          userType === "developer"
-                            ? "https://github.com/yourusername"
-                            : "https://linkedin.com/in/yourusername"
+                          userType === 'developer'
+                            ? 'https://github.com/yourusername'
+                            : 'https://linkedin.com/in/yourusername'
                         }
                       />
                     </div>
 
-                    {userType === "tester" && (
+                    {userType === 'tester' && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="hourlyRate">Hourly Rate (USD)</Label>
@@ -405,13 +403,13 @@ export default function AuthPage() {
                             id="hourlyRate"
                             type="number"
                             value={formData.hourlyRate}
-                            onChange={(e) => handleInputChange("hourlyRate", e.target.value)}
+                            onChange={(e) => handleInputChange('hourlyRate', e.target.value)}
                             placeholder="25"
                           />
                         </div>
                         <div>
                           <Label htmlFor="availability">Availability</Label>
-                          <Select onValueChange={(value) => handleInputChange("availability", value)}>
+                          <Select onValueChange={(value) => handleInputChange('availability', value)}>
                             <SelectTrigger>
                               <SelectValue placeholder="Select availability" />
                             </SelectTrigger>
@@ -442,5 +440,5 @@ export default function AuthPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

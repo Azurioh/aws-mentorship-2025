@@ -1,62 +1,60 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import "@/lib/amplify-config"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Users, Eye, EyeOff, ArrowLeft } from 'lucide-react'
-import Link from "next/link"
-import { signIn } from "@/lib/amplify"
-
+import { useState } from 'react';
+import '@/lib/amplify-config';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Users, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { signIn } from '@/lib/amplify';
 
 export default function LoginPage() {
-  const router = useRouter()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+    email: '',
+    password: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-    if (error) setError("")
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (error) setError('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('1');
 
-    console.log("1")
-
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
 
     try {
       if (formData.email && formData.password) {
-        const out = await signIn(formData.email, formData.password)
+        const out = await signIn(formData.email, formData.password);
 
-        console.log(out)
-        router.push("/dashboard")
+        console.log(out);
+        navigate('/dashboard');
       } else {
-        setError("Please fill in all fields")
+        setError('Please fill in all fields');
       }
     } catch (err) {
-      setError("Invalid email or password")
+      setError('Invalid email or password');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="mb-6">
-          <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900">
+          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-gray-900">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
@@ -87,7 +85,7 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
                   placeholder="Enter your email"
                   required
                   disabled={isLoading}
@@ -99,9 +97,9 @@ export default function LoginPage() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     value={formData.password}
-                    onChange={(e) => handleInputChange("password", e.target.value)}
+                    onChange={(e) => handleInputChange('password', e.target.value)}
                     placeholder="Enter your password"
                     required
                     disabled={isLoading}
@@ -112,8 +110,7 @@ export default function LoginPage() {
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
-                    disabled={isLoading}
-                  >
+                    disabled={isLoading}>
                     {showPassword ? (
                       <EyeOff className="h-4 w-4 text-gray-400" />
                     ) : (
@@ -124,20 +121,20 @@ export default function LoginPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
                   Forgot password?
                 </Link>
               </div>
 
               <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
-                {isLoading ? "Signing in..." : "Sign In"}
+                {isLoading ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Don't have an account?{" "}
-                <Link href="/auth?mode=register" className="text-blue-600 hover:underline">
+                Don't have an account?{' '}
+                <Link to="/auth?mode=register" className="text-blue-600 hover:underline">
                   Sign up here
                 </Link>
               </p>
@@ -146,13 +143,17 @@ export default function LoginPage() {
             <div className="mt-4 p-3 bg-gray-50 rounded-lg">
               <p className="text-xs text-gray-600 mb-2">Demo accounts:</p>
               <div className="space-y-1 text-xs">
-                <p><strong>Developer:</strong> dev@example.com / password</p>
-                <p><strong>Tester:</strong> tester@example.com / password</p>
+                <p>
+                  <strong>Developer:</strong> dev@example.com / password
+                </p>
+                <p>
+                  <strong>Tester:</strong> tester@example.com / password
+                </p>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+  );
 }

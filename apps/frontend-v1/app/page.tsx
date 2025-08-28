@@ -1,33 +1,28 @@
-"use client"
+'use client';
 
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Users, MessageSquare, Star, Zap, Shield, Globe } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Users, MessageSquare, Star, Zap, Shield, Globe } from "lucide-react"
-import Link from "next/link"
-
-import "@/lib/amplify-config"
+import '@/lib/amplify-config';
 import * as Auth from 'aws-amplify/auth';
 
-
 export default function LandingPage() {
-
-
-  const [isAuth, setIsAuth ] = useState(false)
-  
+  const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
-      const doFetch = async () => {
-        const session = await Auth.fetchAuthSession();
-        if (session.tokens?.idToken) {
-          setIsAuth(true)
-        }
+    const doFetch = async () => {
+      const session = await Auth.fetchAuthSession();
+      if (session.tokens?.idToken) {
+        setIsAuth(true);
       }
+    };
 
-    doFetch()
-  }, [])
+    doFetch();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -41,38 +36,37 @@ export default function LandingPage() {
             <span className="text-xl font-bold text-gray-900">TestConnect</span>
           </div>
           <nav className="hidden md:flex space-x-6">
-            <Link href="#features" className="text-gray-600 hover:text-gray-900">
+            <Link to="#features" className="text-gray-600 hover:text-gray-900">
               Features
             </Link>
-            <Link href="#how-it-works" className="text-gray-600 hover:text-gray-900">
+            <Link to="#how-it-works" className="text-gray-600 hover:text-gray-900">
               How it Works
             </Link>
-            <Link href="#pricing" className="text-gray-600 hover:text-gray-900">
+            <Link to="#pricing" className="text-gray-600 hover:text-gray-900">
               Pricing
             </Link>
           </nav>
-          {!isAuth &&
-            
-              <nav className="hidden md:flex items-center space-x-6">
-                <Link href="/explore" className="text-blue-600 font-medium">
-                  Explore Projects
-                </Link>
-                <Link href="/login" className="text-gray-600 hover:text-gray-900">
-                  Sign In
-                </Link>
-                <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                  <Link href="/auth?mode=register">Get Started</Link>
-                </Button>
-              </nav>
-            }
+          {!isAuth && (
+            <nav className="hidden md:flex items-center space-x-6">
+              <Link to="/explore" className="text-blue-600 font-medium">
+                Explore Projects
+              </Link>
+              <Link to="/login" className="text-gray-600 hover:text-gray-900">
+                Sign In
+              </Link>
+              <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                <Link to="/auth?mode=register">Get Started</Link>
+              </Button>
+            </nav>
+          )}
 
-            {isAuth &&
-              <nav className="hidden md:flex items-center space-x-6">
-                <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                  <Link href="/dashboard">Dashboard</Link>
-                </Button>
-              </nav>
-            }
+          {isAuth && (
+            <nav className="hidden md:flex items-center space-x-6">
+              <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                <Link to="/dashboard">Dashboard</Link>
+              </Button>
+            </nav>
+          )}
         </div>
       </header>
 
@@ -83,8 +77,8 @@ export default function LandingPage() {
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             Find the Perfect
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              {" "}
-              Testers{" "}
+              {' '}
+              Testers{' '}
             </span>
             for Your Projects
           </h1>
@@ -94,10 +88,10 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700">
-              <Link href="/auth?mode=register&type=developer">I'm a Developer</Link>
+              <Link to="/auth?mode=register&type=developer">I'm a Developer</Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="bg-white text-gray-700">
-              <Link href="/auth?mode=register&type=tester">I'm a Tester</Link>
+              <Link to="/auth?mode=register&type=tester">I'm a Tester</Link>
             </Button>
           </div>
         </div>
@@ -263,7 +257,7 @@ export default function LandingPage() {
             Join thousands of developers and testers who are already using TestConnect to build better applications.
           </p>
           <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100" asChild>
-            <Link href="/auth?mode=register">Start Testing Today</Link>
+            <Link to="/auth?mode=register">Start Testing Today</Link>
           </Button>
         </div>
       </section>
@@ -285,17 +279,17 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4">Platform</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link to="#" className="hover:text-white">
                     Features
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link to="#" className="hover:text-white">
                     Pricing
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link to="#" className="hover:text-white">
                     Security
                   </Link>
                 </li>
@@ -305,17 +299,17 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link to="#" className="hover:text-white">
                     Help Center
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link to="#" className="hover:text-white">
                     Contact Us
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link to="#" className="hover:text-white">
                     Status
                   </Link>
                 </li>
@@ -325,17 +319,17 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link to="#" className="hover:text-white">
                     About
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link to="#" className="hover:text-white">
                     Blog
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link to="#" className="hover:text-white">
                     Careers
                   </Link>
                 </li>
@@ -348,5 +342,5 @@ export default function LandingPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }

@@ -1,87 +1,98 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { ArrowLeft, User, Bell, Shield, CreditCard, Upload, Save, CheckCircle, X } from 'lucide-react'
-import Link from "next/link"
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ArrowLeft, User, Bell, Shield, CreditCard, Upload, Save, CheckCircle, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function SettingsPage() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [saveMessage, setSaveMessage] = useState("")
-  
+  const [isLoading, setIsLoading] = useState(false);
+  const [saveMessage, setSaveMessage] = useState('');
+
   // Mock user data - in real app, fetch from your backend
   const [userData, setUserData] = useState({
     // Profile
-    fullName: "John Doe",
-    email: "john@example.com",
-    bio: "Experienced full-stack developer with 5+ years in web and mobile development. Passionate about creating user-friendly applications.",
-    company: "TechCorp Inc.",
-    location: "San Francisco, CA",
-    website: "https://johndoe.dev",
-    avatar: "/placeholder.svg?height=100&width=100",
-    
+    fullName: 'John Doe',
+    email: 'john@example.com',
+    bio: 'Experienced full-stack developer with 5+ years in web and mobile development. Passionate about creating user-friendly applications.',
+    company: 'TechCorp Inc.',
+    location: 'San Francisco, CA',
+    website: 'https://johndoe.dev',
+    avatar: '/placeholder.svg?height=100&width=100',
+
     // Skills & Experience
-    userType: "developer",
-    experience: "advanced",
-    skills: ["React", "Next.js", "Node.js", "TypeScript", "Python"],
-    hourlyRate: "75",
-    availability: "part-time",
-    
+    userType: 'developer',
+    experience: 'advanced',
+    skills: ['React', 'Next.js', 'Node.js', 'TypeScript', 'Python'],
+    hourlyRate: '75',
+    availability: 'part-time',
+
     // Notifications
     emailNotifications: true,
     projectUpdates: true,
     messageNotifications: true,
     marketingEmails: false,
-    
+
     // Privacy
-    profileVisibility: "public",
+    profileVisibility: 'public',
     showEmail: false,
     showLocation: true,
-  })
+  });
 
   const availableSkills = [
-    "React", "Next.js", "Vue.js", "Angular", "Node.js", "Python", "Java", "C#",
-    "Mobile Development", "Web Development", "API Development", "Database Design",
-    "Manual Testing", "Automated Testing", "Performance Testing", "Security Testing"
-  ]
+    'React',
+    'Next.js',
+    'Vue.js',
+    'Angular',
+    'Node.js',
+    'Python',
+    'Java',
+    'C#',
+    'Mobile Development',
+    'Web Development',
+    'API Development',
+    'Database Design',
+    'Manual Testing',
+    'Automated Testing',
+    'Performance Testing',
+    'Security Testing',
+  ];
 
   const handleInputChange = (field: string, value: any) => {
-    setUserData(prev => ({ ...prev, [field]: value }))
-  }
+    setUserData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSkillToggle = (skill: string) => {
-    setUserData(prev => ({
+    setUserData((prev) => ({
       ...prev,
-      skills: prev.skills.includes(skill) 
-        ? prev.skills.filter(s => s !== skill)
-        : [...prev.skills, skill]
-    }))
-  }
+      skills: prev.skills.includes(skill) ? prev.skills.filter((s) => s !== skill) : [...prev.skills, skill],
+    }));
+  };
 
   const handleSave = async (section: string) => {
-    setIsLoading(true)
-    
+    setIsLoading(true);
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      setSaveMessage(`${section} settings saved successfully!`)
-      setTimeout(() => setSaveMessage(""), 3000)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setSaveMessage(`${section} settings saved successfully!`);
+      setTimeout(() => setSaveMessage(''), 3000);
     } catch (error) {
-      setSaveMessage("Error saving settings. Please try again.")
+      setSaveMessage('Error saving settings. Please try again.');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -89,7 +100,7 @@ export default function SettingsPage() {
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link href="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900">
+            <Link to="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
             </Link>
@@ -141,9 +152,12 @@ export default function SettingsPage() {
                 {/* Avatar Upload */}
                 <div className="flex items-center space-x-4">
                   <Avatar className="w-20 h-20">
-                    <AvatarImage src={userData.avatar || "/placeholder.svg"} alt={userData.fullName} />
+                    <AvatarImage src={userData.avatar || '/placeholder.svg'} alt={userData.fullName} />
                     <AvatarFallback className="text-lg">
-                      {userData.fullName.split(" ").map(n => n[0]).join("")}
+                      {userData.fullName
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')}
                     </AvatarFallback>
                   </Avatar>
                   <div>
@@ -162,7 +176,7 @@ export default function SettingsPage() {
                     <Input
                       id="fullName"
                       value={userData.fullName}
-                      onChange={(e) => handleInputChange("fullName", e.target.value)}
+                      onChange={(e) => handleInputChange('fullName', e.target.value)}
                     />
                   </div>
                   <div>
@@ -171,7 +185,7 @@ export default function SettingsPage() {
                       id="email"
                       type="email"
                       value={userData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
                     />
                   </div>
                 </div>
@@ -182,7 +196,7 @@ export default function SettingsPage() {
                     <Input
                       id="company"
                       value={userData.company}
-                      onChange={(e) => handleInputChange("company", e.target.value)}
+                      onChange={(e) => handleInputChange('company', e.target.value)}
                       placeholder="Your company name"
                     />
                   </div>
@@ -191,7 +205,7 @@ export default function SettingsPage() {
                     <Input
                       id="location"
                       value={userData.location}
-                      onChange={(e) => handleInputChange("location", e.target.value)}
+                      onChange={(e) => handleInputChange('location', e.target.value)}
                       placeholder="City, Country"
                     />
                   </div>
@@ -202,7 +216,7 @@ export default function SettingsPage() {
                   <Input
                     id="website"
                     value={userData.website}
-                    onChange={(e) => handleInputChange("website", e.target.value)}
+                    onChange={(e) => handleInputChange('website', e.target.value)}
                     placeholder="https://yourwebsite.com"
                   />
                 </div>
@@ -212,15 +226,15 @@ export default function SettingsPage() {
                   <Textarea
                     id="bio"
                     value={userData.bio}
-                    onChange={(e) => handleInputChange("bio", e.target.value)}
+                    onChange={(e) => handleInputChange('bio', e.target.value)}
                     placeholder="Tell us about yourself..."
                     rows={4}
                   />
                 </div>
 
-                <Button onClick={() => handleSave("Profile")} disabled={isLoading}>
+                <Button onClick={() => handleSave('Profile')} disabled={isLoading}>
                   <Save className="w-4 h-4 mr-2" />
-                  {isLoading ? "Saving..." : "Save Profile"}
+                  {isLoading ? 'Saving...' : 'Save Profile'}
                 </Button>
               </CardContent>
             </Card>
@@ -234,7 +248,9 @@ export default function SettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="experience">Experience Level</Label>
-                    <Select value={userData.experience} onValueChange={(value) => handleInputChange("experience", value)}>
+                    <Select
+                      value={userData.experience}
+                      onValueChange={(value) => handleInputChange('experience', value)}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -248,7 +264,9 @@ export default function SettingsPage() {
                   </div>
                   <div>
                     <Label htmlFor="availability">Availability</Label>
-                    <Select value={userData.availability} onValueChange={(value) => handleInputChange("availability", value)}>
+                    <Select
+                      value={userData.availability}
+                      onValueChange={(value) => handleInputChange('availability', value)}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -262,14 +280,14 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                {userData.userType === "tester" && (
+                {userData.userType === 'tester' && (
                   <div>
                     <Label htmlFor="hourlyRate">Hourly Rate (USD)</Label>
                     <Input
                       id="hourlyRate"
                       type="number"
                       value={userData.hourlyRate}
-                      onChange={(e) => handleInputChange("hourlyRate", e.target.value)}
+                      onChange={(e) => handleInputChange('hourlyRate', e.target.value)}
                       placeholder="75"
                     />
                   </div>
@@ -284,8 +302,7 @@ export default function SettingsPage() {
                           <span>{skill}</span>
                           <button
                             onClick={() => handleSkillToggle(skill)}
-                            className="ml-1 hover:bg-gray-300 rounded-full p-0.5"
-                          >
+                            className="ml-1 hover:bg-gray-300 rounded-full p-0.5">
                             <X className="w-3 h-3" />
                           </button>
                         </Badge>
@@ -293,24 +310,22 @@ export default function SettingsPage() {
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
                       {availableSkills
-                        .filter(skill => !userData.skills.includes(skill))
+                        .filter((skill) => !userData.skills.includes(skill))
                         .map((skill) => (
-                        <div key={skill} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={skill}
-                            checked={false}
-                            onCheckedChange={() => handleSkillToggle(skill)}
-                          />
-                          <Label htmlFor={skill} className="text-sm">{skill}</Label>
-                        </div>
-                      ))}
+                          <div key={skill} className="flex items-center space-x-2">
+                            <Checkbox id={skill} checked={false} onCheckedChange={() => handleSkillToggle(skill)} />
+                            <Label htmlFor={skill} className="text-sm">
+                              {skill}
+                            </Label>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 </div>
 
-                <Button onClick={() => handleSave("Professional")} disabled={isLoading}>
+                <Button onClick={() => handleSave('Professional')} disabled={isLoading}>
                   <Save className="w-4 h-4 mr-2" />
-                  {isLoading ? "Saving..." : "Save Professional Info"}
+                  {isLoading ? 'Saving...' : 'Save Professional Info'}
                 </Button>
               </CardContent>
             </Card>
@@ -332,7 +347,7 @@ export default function SettingsPage() {
                     </div>
                     <Checkbox
                       checked={userData.emailNotifications}
-                      onCheckedChange={(checked) => handleInputChange("emailNotifications", checked)}
+                      onCheckedChange={(checked) => handleInputChange('emailNotifications', checked)}
                     />
                   </div>
 
@@ -343,7 +358,7 @@ export default function SettingsPage() {
                     </div>
                     <Checkbox
                       checked={userData.projectUpdates}
-                      onCheckedChange={(checked) => handleInputChange("projectUpdates", checked)}
+                      onCheckedChange={(checked) => handleInputChange('projectUpdates', checked)}
                     />
                   </div>
 
@@ -354,7 +369,7 @@ export default function SettingsPage() {
                     </div>
                     <Checkbox
                       checked={userData.messageNotifications}
-                      onCheckedChange={(checked) => handleInputChange("messageNotifications", checked)}
+                      onCheckedChange={(checked) => handleInputChange('messageNotifications', checked)}
                     />
                   </div>
 
@@ -365,14 +380,14 @@ export default function SettingsPage() {
                     </div>
                     <Checkbox
                       checked={userData.marketingEmails}
-                      onCheckedChange={(checked) => handleInputChange("marketingEmails", checked)}
+                      onCheckedChange={(checked) => handleInputChange('marketingEmails', checked)}
                     />
                   </div>
                 </div>
 
-                <Button onClick={() => handleSave("Notifications")} disabled={isLoading}>
+                <Button onClick={() => handleSave('Notifications')} disabled={isLoading}>
                   <Save className="w-4 h-4 mr-2" />
-                  {isLoading ? "Saving..." : "Save Preferences"}
+                  {isLoading ? 'Saving...' : 'Save Preferences'}
                 </Button>
               </CardContent>
             </Card>
@@ -388,10 +403,9 @@ export default function SettingsPage() {
               <CardContent className="space-y-6">
                 <div>
                   <Label htmlFor="profileVisibility">Profile Visibility</Label>
-                  <Select 
-                    value={userData.profileVisibility} 
-                    onValueChange={(value) => handleInputChange("profileVisibility", value)}
-                  >
+                  <Select
+                    value={userData.profileVisibility}
+                    onValueChange={(value) => handleInputChange('profileVisibility', value)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -411,7 +425,7 @@ export default function SettingsPage() {
                     </div>
                     <Checkbox
                       checked={userData.showEmail}
-                      onCheckedChange={(checked) => handleInputChange("showEmail", checked)}
+                      onCheckedChange={(checked) => handleInputChange('showEmail', checked)}
                     />
                   </div>
 
@@ -422,14 +436,14 @@ export default function SettingsPage() {
                     </div>
                     <Checkbox
                       checked={userData.showLocation}
-                      onCheckedChange={(checked) => handleInputChange("showLocation", checked)}
+                      onCheckedChange={(checked) => handleInputChange('showLocation', checked)}
                     />
                   </div>
                 </div>
 
-                <Button onClick={() => handleSave("Privacy")} disabled={isLoading}>
+                <Button onClick={() => handleSave('Privacy')} disabled={isLoading}>
                   <Save className="w-4 h-4 mr-2" />
-                  {isLoading ? "Saving..." : "Save Privacy Settings"}
+                  {isLoading ? 'Saving...' : 'Save Privacy Settings'}
                 </Button>
               </CardContent>
             </Card>
@@ -447,8 +461,8 @@ export default function SettingsPage() {
                   <CreditCard className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Payment Integration Coming Soon</h3>
                   <p className="text-gray-600">
-                    We're working on integrating secure payment processing. 
-                    For now, payments are handled directly between users.
+                    We're working on integrating secure payment processing. For now, payments are handled directly
+                    between users.
                   </p>
                 </div>
               </CardContent>
@@ -457,5 +471,5 @@ export default function SettingsPage() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }

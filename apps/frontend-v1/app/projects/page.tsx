@@ -1,21 +1,21 @@
-"use client"
+'use client';
 
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Star, Clock, DollarSign, Users, ArrowLeft, MapPin } from "lucide-react"
-import Link from "next/link"
-import "@/lib/amplify-config"
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import {} from '@/components/ui/avatar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Search, Clock, Users, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import '@/lib/amplify-config';
 import * as Auth from 'aws-amplify/auth';
 
 export default function ProjectsPage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [categoryFilter, setCategoryFilter] = useState("all")
-  const [budgetFilter, setBudgetFilter] = useState("all")
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [budgetFilter, setBudgetFilter] = useState('all');
 
   // Mock projects data
   // const projects = [
@@ -97,7 +97,8 @@ export default function ProjectsPage() {
   //   },
   // ]
 
-  const [projects, setProjects] = useState<Array<{
+  const [projects, setProjects] = useState<
+    Array<{
       id: string;
       name: string;
       description: string;
@@ -109,70 +110,65 @@ export default function ProjectsPage() {
       category: string;
       skills: string[];
       applicants: number;
-    }>>([])
-  
-    const [isAuth, setIsAuth ] = useState(false)
-  
-  
-    useEffect(() => {
-      const doFetch = async () => {
-  
-  
-        const session = await Auth.fetchAuthSession();
-  
-  
-  
-        if (session.tokens?.idToken) {
-          setIsAuth(true)
-        }
-        console.log(session)
-  
-        const req = await fetch("https://w7it92figc.execute-api.eu-west-3.amazonaws.com/prod/projects", { headers: {
-          "Authorization" : `Bearer ${session.tokens?.idToken?.toString()}`
-        }})
-  
-        if (!req.ok) return;
-  
-        const data = await req.json()
-  
-  
-        setProjects(data.data)
-  
-      }
-  
-      doFetch()
-    }, [])
+    }>
+  >([]);
 
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    const doFetch = async () => {
+      const session = await Auth.fetchAuthSession();
+
+      if (session.tokens?.idToken) {
+        setIsAuth(true);
+      }
+      console.log(session);
+
+      const req = await fetch('https://w7it92figc.execute-api.eu-west-3.amazonaws.com/prod/projects', {
+        headers: {
+          Authorization: `Bearer ${session.tokens?.idToken?.toString()}`,
+        },
+      });
+
+      if (!req.ok) return;
+
+      const data = await req.json();
+
+      setProjects(data.data);
+    };
+
+    doFetch();
+  }, []);
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch =
       project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = categoryFilter === "all" || project.category === categoryFilter
+      project.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = categoryFilter === 'all' || project.category === categoryFilter;
     // const matchesBudget =
     //   budgetFilter === "all" ||
     //   (budgetFilter === "low" && project.budget < 500) ||
     //   (budgetFilter === "medium" && project.budget >= 500 && project.budget < 1000) ||
     //   (budgetFilter === "high" && project.budget >= 1000)
 
-    return matchesSearch && matchesCategory 
-  })
+    return matchesSearch && matchesCategory;
+  });
 
   const formatBudget = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
-    }).format(amount)
-  }
+    }).format(amount);
+  };
 
   const getDaysUntilDeadline = (deadline: string) => {
-    const today = new Date()
-    const deadlineDate = new Date(deadline)
-    const diffTime = deadlineDate.getTime() - today.getTime()
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    return diffDays
-  }
+    const today = new Date();
+    const deadlineDate = new Date(deadline);
+    const diffTime = deadlineDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -180,7 +176,7 @@ export default function ProjectsPage() {
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link href="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900">
+            <Link to="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
             </Link>
@@ -239,7 +235,7 @@ export default function ProjectsPage() {
         {/* Results */}
         <div className="mb-4 flex items-center justify-between">
           <p className="text-gray-600">
-            {filteredProjects.length} project{filteredProjects.length !== 1 ? "s" : ""} found
+            {filteredProjects.length} project{filteredProjects.length !== 1 ? 's' : ''} found
           </p>
         </div>
 
@@ -255,7 +251,7 @@ export default function ProjectsPage() {
                         <h3 className="text-xl font-semibold text-gray-900 mb-2">{project.name}</h3>
                         <div className="flex items-center space-x-4 mb-3">
                           <Badge variant="secondary" className="capitalize">
-                            {project.category.replace("-", " ")}
+                            {project.category.replace('-', ' ')}
                           </Badge>
                           {/* <div className="flex items-center text-green-600">
                             <DollarSign className="w-4 h-4 mr-1" />
@@ -372,5 +368,5 @@ export default function ProjectsPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
